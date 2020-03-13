@@ -82,15 +82,12 @@ public class Strategize {
         }
     }
 }
-```
-
-输出结果:
-
-```
+/* Output:
 hello there?
 HELLO THERE!
 Hello
 Hello there Hello there
+*/
 ```
 
 **Strategy** 接口提供了单一的 `approach()` 方法来承载函数式功能。通过创建不同的 **Strategy** 对象，我们可以创建不同的行为。
@@ -154,17 +151,14 @@ public class LambdaExpressions {
         System.out.println(moreLines.brief());
     }
 }
-```
-
-输出结果：
-
-```
+/* Output:
 Oh! No Parens!
 Hi! More details
 Short info
 Pi! 3.14159
 moreLines()
 from moreLines()
+*/
 ```
 
 我们从三个接口开始，每个接口都有一个单独的方法（很快就会理解它的重要性）。但是，每个方法都有不同数量的参数，以便演示 Lambda 表达式语法。
@@ -208,7 +202,6 @@ interface IntCall {
 
 ```java
 // functional/RecursiveFactorial.java
-
 public class RecursiveFactorial {
     static IntCall fact;
     public static void main(String[] args) {
@@ -217,11 +210,7 @@ public class RecursiveFactorial {
             System.out.println(fact.call(i));
     }
 }
-```
-
-输出结果：
-
-```
+/* Output:
 1
 1
 2
@@ -233,6 +222,7 @@ public class RecursiveFactorial {
 40320
 362880
 3628800
+*/
 ```
 
 这里，`fact` 是一个静态变量。 注意使用三元 **if-else**。 递归函数将一直调用自己，直到 `i == 0`。所有递归函数都有“停止条件”，否则将无限递归并产生异常。
@@ -243,26 +233,19 @@ public class RecursiveFactorial {
 // functional/RecursiveFibonacci.java
 public class RecursiveFibonacci {
     IntCall fib;
-
     RecursiveFibonacci() {
         fib = n -> n == 0 ? 0 : n == 1 ? 1 : fib.call(n - 1) + fib.call(n - 2);
     }
-
     int fibonacci(int n) {
         return fib.call(n);
     }
-
     public static void main(String[] args) {
         RecursiveFibonacci rf = new RecursiveFibonacci();
         for (int i = 0; i <= 10; i++)
             System.out.println(rf.fibonacci(i));
     }
 }
-```
-
-输出结果：
-
-```
+/* Output:
 0
 1
 1
@@ -274,6 +257,7 @@ public class RecursiveFibonacci {
 21
 34
 55
+*/
 ```
 
 将 `Fibonacci` 序列中的最后两个元素求和来产生下一个元素。
@@ -285,59 +269,56 @@ Java 8 方法引用没有历史包袱。方法引用组成：类名或对象名�
 
 ```java
 // functional/MethodReferences.java
-
-import java.util.*;
-
 interface Callable { // [1]
-  void call(String s);
+    void call(String s);
 }
 
 class Describe {
-  void show(String msg) { // [2]
-    System.out.println(msg);
-  }
+    void show(String msg) { // [2]
+        System.out.println(msg);
+    }
 }
 
 public class MethodReferences {
-  static void hello(String name) { // [3]
-    System.out.println("Hello, " + name);
-  }
-  static class Description {
-    String about;
-    Description(String desc) { about = desc; }
-    void help(String msg) { // [4]
-      System.out.println(about + " " + msg);
+    static void hello(String name) { // [3]
+        System.out.println("Hello, " + name);
     }
-  }
-  static class Helper {
-    static void assist(String msg) { // [5]
-      System.out.println(msg);
+    static class Description {
+        String about;
+        Description(String desc) {
+            about = desc;
+        }
+        void help(String msg) { // [4]
+            System.out.println(about + " " + msg);
+        }
     }
-  }
-  public static void main(String[] args) {
-    Describe d = new Describe();
-    Callable c = d::show; // [6]
-    c.call("call()"); // [7]
+    static class Helper {
+        static void assist(String msg) { // [5]
+            System.out.println(msg);
+        }
+    }
 
-    c = MethodReferences::hello; // [8]
-    c.call("Bob");
+    public static void main(String[] args) {
+        Describe d = new Describe();
+        Callable c = d::show; // [6]
+        c.call("call()"); // [7]
 
-    c = new Description("valuable")::help; // [9]
-    c.call("information");
+        c = MethodReferences::hello; // [8]
+        c.call("Bob");
 
-    c = Helper::assist; // [10]
-    c.call("Help!");
-  }
+        c = new Description("valuable")::help; // [9]
+        c.call("information");
+
+        c = Helper::assist; // [10]
+        c.call("Help!");
+    }
 }
-```
-
-输出结果：
-
-```
+/* Output:
 call()
 Hello, Bob
 valuable information
 Help!
+*/
 ```
 
 **[1]** 我们从单一方法接口开始（同样，你很快就会了解到这一点的重要性）。
@@ -362,52 +343,46 @@ Help!
 
 上例只是简短的介绍，我们很快就能看到方法引用的全部变化。
 
-### Runnable接口
+### 13.3.1 Runnable接口
 
 **Runnable** 接口自 1.0 版以来一直在 Java 中，因此不需要导入。它也符合特殊的单方法接口格式：它的方法 `run()` 不带参数，也没有返回值。因此，我们可以使用 Lambda 表达式和方法引用作为 **Runnable**：
 
 ```java
 // functional/RunnableMethodReference.java
-
 // 方法引用与 Runnable 接口的结合使用
 
 class Go {
-  static void go() {
-    System.out.println("Go::go()");
-  }
+    static void go() {
+        System.out.println("Go::go()");
+    }
 }
 
 public class RunnableMethodReference {
-  public static void main(String[] args) {
+    public static void main(String[] args) {
 
-    new Thread(new Runnable() {
-      public void run() {
-        System.out.println("Anonymous");
-      }
-    }).start();
+        new Thread(new Runnable() {
+            public void run() {
+                System.out.println("Anonymous");
+            }
+        }).start();
 
-    new Thread(
-      () -> System.out.println("lambda")
-    ).start();
+        new Thread(
+            () -> System.out.println("lambda")
+        ).start();
 
-    new Thread(Go::go).start();
-  }
+        new Thread(Go::go).start();
+    }
 }
-```
-
-输出结果：
-
-```
+/* Output:
 Anonymous
 lambda
 Go::go()
+*/
 ```
 
 **Thread** 对象将 **Runnable** 作为其构造函数参数，并具有会调用 `run()` 的方法  `start()`。 **注意**，只有**匿名内部类**才需要具有名为 `run()` 的方法。
 
-
-<!-- Unbound Method References -->
-### 未绑定的方法引用
+### 13.3.2 未绑定的方法引用
 
 
 未绑定的方法引用是指没有关联对象的普通（非静态）方法。 使用未绑定的引用之前，我们必须先提供对象：
@@ -448,7 +423,7 @@ X::f()
 ```
 
 
-截止目前，我们已经知道了与接口方法同名的方法引用。 在 **[1]**，我们尝试把 `X` 的 `f()` 方法引用赋值给 **MakeString**。结果：即使 `make()` 与 `f()` 具有相同的签名，编译也会报“invalid method reference”（无效方法引用）错误。 这是因为实际上还有另一个隐藏的参数：我们的老朋友 `this`。 你不能在没有 `X` 对象的前提下调用 `f()`。 因此，`X :: f` 表示未绑定的方法引用，因为它尚未“绑定”到对象。
+截止目前，我们已经知道了与接口方法同名的方法引用。 在 **[1]**，我们尝试把 `X` 的 `f()` 方法引用赋值给 **MakeString**。结果：即使 `make()` 与 `f()` 具有相同的签名，编译也会报“`invalid method reference`”（无效方法引用）错误。 这是因为实际上还有另一个隐藏的参数：我们的老朋友 `this`。 你不能在没有 `X` 对象的前提下调用 `f()`。 因此，`X :: f` 表示未绑定的方法引用，因为它尚未“绑定”到对象。
 
 要解决这个问题，我们需要一个 `X` 对象，所以我们的接口实际上需要一个额外的参数的接口，如上例中的 **TransformX**。 如果将 `X :: f` 赋值给 **TransformX**，这在 Java 中是允许的。这次我们需要调整下心里预期——使用未绑定的引用时，函数方法的签名（接口中的单个方法）不再与方法引用的签名完全匹配。 理由是：你需要一个对象来调用方法。
 
@@ -458,7 +433,6 @@ X::f()
 // functional/MultiUnbound.java
 
 // 未绑定的方法与多参数的结合运用
-
 class This {
   void two(int i, double d) {}
   void three(int i, double d, String s) {}
@@ -493,7 +467,7 @@ public class MultiUnbound {
 
 为了说明这一点，我将类命名为 **This** ，函数方法的第一个参数则是 **athis**，但是你应该选择其他名称以防止生产代码混淆。
 
-### 构造函数引用
+### 13.3.3 构造函数引用
 
 你还可以捕获构造函数的引用，然后通过引用调用该构造函数。
 
@@ -818,7 +792,7 @@ public class ClassFunctionals {
 
 请**注意**，每个方法名称都是随意的（如 `f1()`，`f2()`等）。正如你刚才看到的，一旦将方法引用赋值给函数接口，我们就可以调用与该接口关联的函数方法。 在此示例中为 `get()`、`compare()`、`accept()`、`apply()` 和 `test()`。
 
-### 多参数函数式接口
+### 13.4.1 多参数函数式接口
 
 `java.util.functional` 中的接口是有限的。比如有了 `BiFunction`，但它不能变化。 如果需要三参数函数的接口怎么办？ 其实这些接口非常简单，很容易查看 Java 库源代码并自行创建。代码示例：
 
@@ -848,7 +822,7 @@ public class TriFunctionTest {
 
 这里我们测试了方法引用和 Lambda 表达式。
 
-### 缺少基本类型的函数
+### 13.4.2 缺少基本类型的函数
 
 让我们重温一下 `BiConsumer`，看看我们如何创建缺少 **int**，**long** 和 **double** 的各种排列：
 
@@ -1014,8 +988,6 @@ O
 
 这里使用到了 `Function` 接口中名为 `andThen()` 的默认方法，该方法专门用于操作函数。 顾名思义，在调用 `in` 函数之后调用 `toThen()`（还有个 `compose()` 方法，它在 `in` 函数之前应用新函数）。 要附加一个 `andThen()` 函数，我们只需将该函数作为参数传递。 `transform()` 产生的是一个新函数，它将 `in` 的动作与 `andThen()` 参数的动作结合起来。
 
-<!-- Closures -->
-
 ## 13.6 闭包
 
 
@@ -1033,10 +1005,10 @@ O
 import java.util.function.*;
 
 public class Closure1 {
-  int i;
-  IntSupplier makeFun(int x) {
-    return () -> x + i++;
-  }
+    int i;
+    IntSupplier makeFun(int x) {
+        return () -> x + i++;
+    }
 }
 ```
 
@@ -1125,7 +1097,7 @@ public class Closure4 {
 如果 `x` 和 `i` 的值在方法中的其他位置发生改变（但不在返回的函数内部），则编译器仍将视其为错误。每个递增操作则会分别产生错误消息。代码示例：
 
 ```java
-/ functional/Closure5.java
+// functional/Closure5.java
 
 // {无法编译成功}
 import java.util.function.*;
@@ -1208,6 +1180,9 @@ public class Closure8 {
     System.out.println(l2);
   }
 }
+/*
+
+*/
 ```
 
 输出结果：
@@ -1245,13 +1220,12 @@ public class Closure9 {
 
 让我们回顾一下 `Closure1.java`。那么现在问题来了：为什么变量 `i` 被修改编译器却没有报错呢。 它既不是 `final` 的，也不是**等同 final 效果**的。因为 `i` 是外围类的成员，所以这样做肯定是安全的（除非你正在创建共享可变内存的多个函数）。是的，你可以辩称在这种情况下不会发生变量捕获（Variable Capture）。但可以肯定的是，`Closure3.java` 的错误消息是专门针对局部变量的。因此，规则并非只是“在 Lambda 之外定义的任何变量必须是 `final` 的或**等同 final 效果**那么简单。相反，你必须考虑捕获的变量是否是**等同 final 效果**的。 如果它是对象中的字段，那么它拥有独立的生存周期，并且不需要任何特殊的捕获，以便稍后在调用 Lambda 时存在。
 
-### 作为闭包的内部类
+### 13.6.1 作为闭包的内部类
 
 我们可以使用匿名内部类重写之前的例子:
 
 ```java
 // functional/AnonymousClosure.java
-
 import java.util.function.*;
 
 public class AnonymousClosure {
@@ -1269,7 +1243,6 @@ public class AnonymousClosure {
 
 实际上只要有内部类，就会有闭包（Java 8 只是简化了闭包操作）。在 Java 8 之前，变量 `x` 和 `i` 必须被明确声明为 `final`。在 Java 8 中，内部类的规则放宽，包括**等同 final 效果**。
 
-<!-- Function Composition -->
 ## 13.7 函数组合
 
 
@@ -1288,7 +1261,6 @@ public class AnonymousClosure {
 
 ```java
 // functional/FunctionComposition.java
-
 import java.util.function.*;
 
 public class FunctionComposition {
@@ -1305,6 +1277,9 @@ public class FunctionComposition {
       f4.apply("GO AFTER ALL AMBULANCES"));
   }
 }
+/*
+
+*/
 ```
 
 输出结果：
@@ -1338,6 +1313,9 @@ public class PredicateComposition {
       .forEach(System.out::println);
   }
 }
+/*
+
+*/
 ```
 
 输出结果：
@@ -1353,14 +1331,12 @@ foobaz
 
 从输出结果我们可以看到 `p4` 的工作流程：任何带有 `foo` 的东西都会留下，即使它的长度大于 5。 `fongopuckey` 因长度超出和不包含 `bar` 而被丢弃。
 
-<!-- Currying and  Partial Evaluation -->
 ## 13.8 柯里化和部分求值
 
-[柯里化](https://en.wikipedia.org/wiki/Currying)（Currying）的名称来自于其发明者之一 *Haskell Curry*。他可能是计算机领域唯一名字被命名重要概念的人（另外就是 Haskell 编程语言）。 柯里化意为：将一个多参数的函数，转换为一系列单参数函数。
+[柯里化](https://en.wikipedia.org/wiki/Currying)（Currying）的名称来自于其发明者之一 *Haskell Curry*。他可能是计算机领域唯一名字被命名重要概念的人（另外就是 Haskell 编程语言）。柯里化意为：将一个多参数的函数，转换为一系列单参数函数。
 
 ```java
 // functional/CurryingAndPartials.java
-
 import java.util.function.*;
 
 public class CurryingAndPartials {
@@ -1386,6 +1362,9 @@ public class CurryingAndPartials {
       System.out.println(sumHi.apply("Hey"));
    }
 }
+/*
+
+*/
 ```
 
 输出结果：
@@ -1422,12 +1401,9 @@ public class Curry3Args {
       System.out.println(ho.apply("Hup"));
    }
 }
-```
-
-输出结果：
-
-```
+/*
 Hi Ho Hup
+*/
 ```
 
 对于每个级别的箭头级联（Arrow-cascading），你在类型声明中包裹了另一个 **Function**。
@@ -1447,17 +1423,13 @@ public class CurriedIntAdd {
     System.out.println(add4.applyAsInt(5));
 	  }
 }
-```
-
-输出结果：
-
-```
+/*
 9
+*/
 ```
 
 可以在互联网上找到更多的柯里化示例。通常它们是用 Java 之外的语言实现的，但如果理解了柯里化的基本概念，你可以很轻松地用 Java 实现它们。
 
-<!-- Pure Functional Programming -->
 ## 13.9 纯函数式编程
 
 
@@ -1475,8 +1447,6 @@ Lambda 表达式和方法引用并没有将 Java 转换成函数式语言，而�
 但是，Lambdas 和方法引用远非完美，我们永远要为 Java 设计者早期的草率决定付出代价。特别是没有泛型 Lambda，所以 Lambda 在 Java 中并非一等公民。虽然我不否认 Java 8 的巨大改进，但这意味着和许多 Java 特性一样，它的使用还是会让人感觉沮丧和鸡肋。
 
 当你遇到学习困难时，请记住通过 IDE（NetBeans、IntelliJ Idea 和 Eclipse）获得帮助，因为 IDE 可以智能提示你何时使用 Lambda 表达式或方法引用，甚至有时还能为你优化代码。
-
-<!--下面是脚注-->
 
 [^1]: 功能粘贴在一起的方法的确有点与众不同，但它仍不失为一个库。
 [^2]: 例如,这个电子书是利用 [Pandoc](http://pandoc.org/) 制作出来的，它是用纯函数式语言 [Haskell](https://www.haskell.org/) 编写的一个程序 。

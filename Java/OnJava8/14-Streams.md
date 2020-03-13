@@ -39,7 +39,7 @@ public class Randoms {
 
 首先，我们给 **Random** 对象一个种子（以便程序再次运行时产生相同的输出）。`ints()` 方法产生一个流并且 `ints()` 方法有多种方式的重载 — 两个参数限定了数值产生的边界。这将生成一个整数流。我们可以使用中间流操作（intermediate stream operation） `distinct()` 来获取它们的非重复值，然后使用 `limit()` 方法获取前 7 个元素。接下来，我们使用 `sorted()` 方法排序。最终使用 `forEach()` 方法遍历输出，它根据传递给它的函数对每个流对象执行操作。在这里，我们传递了一个可以在控制台显示每个元素的方法引用。`System.out::println` 。
 
-注意 `Randoms.java` 中没有声明任何变量。流可以在不使用赋值或可变数据的情况下对有状态的系统建模，这非常有用。
+> 注意 `Randoms.java` 中没有声明任何变量。流可以在不使用赋值或可变数据的情况下对有状态的系统建模，这非常有用。
 
 声明式编程（Declarative programming）是一种：声明要做什么，而非怎么做的编程风格。正如我们在函数式编程中所看到的。**注意**，命令式编程的形式更难以理解。代码示例：
 
@@ -74,9 +74,7 @@ public class ImperativeRandoms {
 
 另一个重要方面，流是懒加载的。这代表着它只在绝对必要时才计算。你可以将流看作“延迟列表”。由于计算延迟，流使我们能够表示非常大（甚至无限）的序列，而不需要考虑内存问题。
 
-<!-- Java 8 Stream Support -->
-
-## 流支持
+## 14.1 流支持
 
 Java 设计者面临着这样一个难题：现存的大量类库不仅为 Java 所用，同时也被应用在整个 Java 生态圈数百万行的代码中。如何将一个全新的流的概念融入到现有类库中呢？
 
@@ -88,8 +86,7 @@ Java 8 采用的解决方案是：在[接口](10-Interfaces.md)中添加被 `def
 
 下面我们来看下每种类型的流操作。
 
-<!-- Stream Creation -->
-## 流创建
+## 14.2 流创建
 
 你可以通过 `Stream.of()` 很容易地将一组元素转化成为流（`Bubble` 类在本章的后面定义）：
 
@@ -103,8 +100,7 @@ public class StreamOf {
         Stream.of("It's ", "a ", "wonderful ", "day ", "for ", "pie!")
             .forEach(System.out::print);
         System.out.println();
-        Stream.of(3.14159, 2.718, 1.618)
-            .forEach(System.out::println);
+        Stream.of(3.14159, 2.718, 1.618).forEach(System.out::println);
     }
 }
 ```
@@ -130,23 +126,19 @@ import java.util.stream.*;
 public class CollectionToStream {
     public static void main(String[] args) {
         List<Bubble> bubbles = Arrays.asList(new Bubble(1), new Bubble(2), new Bubble(3));
-        System.out.println(bubbles.stream()
-            .mapToInt(b -> b.i)
-            .sum());
-        
-        Set<String> w = new HashSet<>(Arrays.asList("It's a wonderful day for pie!".split(" ")));
-        w.stream()
-         .map(x -> x + " ")
-         .forEach(System.out::print);
+        System.out.println(bubbles.stream().mapToInt(b -> b.i).sum());
+
+        Set<String> w = new HashSet<>(
+                Arrays.asList("It's a wonderful day for pie!".split(" ")));
+        w.stream().map(x -> x + " ").forEach(System.out::print);
         System.out.println();
-        
+
         Map<String, Double> m = new HashMap<>();
         m.put("pi", 3.14159);
         m.put("e", 2.718);
         m.put("phi", 1.618);
-        m.entrySet().stream()
-                    .map(e -> e.getKey() + ": " + e.getValue())
-                    .forEach(System.out::println);
+        m.entrySet().stream().map(e -> e.getKey() + ": " + e.getValue())
+                .forEach(System.out::println);
     }
 }
 ```
@@ -167,7 +159,7 @@ pi: 3.14159
 
 为了从 **Map** 集合中产生流数据，我们首先调用 `entrySet()` 产生一个对象流，每个对象都包含一个 `key` 键以及与其相关联的 `value` 值。然后分别调用 `getKey()` 和 `getValue()` 获取值。
 
-### 随机数流
+### 14.2.1 随机数流
 
 `Random` 类被一组生成流的方法增强了。代码示例：
 
@@ -329,7 +321,7 @@ it shop sir the much cheese by conclusion district is
 在主方法中，我们提前看到了 **Stream.**`generate()` 的用法，它可以把任意  `Supplier<T>` 用于生成 `T` 类型的流。
 
 
-### int 类型的范围
+### 14.2.2 int 类型的范围
 
 `IntStream` 类提供了  `range()` 方法用于生成整型序列的流。编写循环时，这个方法会更加便利：
 
@@ -407,7 +399,7 @@ Hi!
 
 原则上，在代码中包含并解释 `repeat()` 并不值得。诚然它是一个相当透明的工具，但结果取决于你的团队和公司的运作方式。
 
-### generate()
+### 14.2.3 generate()
 
 参照 `RandomWords.java` 中 **Stream.**`generate()` 搭配 `Supplier<T>` 使用的例子。代码示例：
 
@@ -514,7 +506,7 @@ Bubble(4)
 
 这是创建单独工厂类（Separate Factory class）的另一种方式。在很多方面它更加整洁，但是这是一个对于代码组织和品味的问题——你总是可以创建一个完全不同的工厂类。
 
-### iterate()
+### 14.2.4 iterate()
 
 **Stream.**`iterate()` 以种子（第一个参数）开头，并将其传给方法（第二个参数）。方法的结果将添加到流，并存储作为第一个参数用于下次调用 `iterate()`，依次类推。我们可以利用 `iterate()` 生成一个斐波那契数列。代码示例：
 
@@ -560,7 +552,7 @@ public class Fibonacci {
 
 在主方法中，我们使用了一个之前没有见过的 `skip()` 操作。它根据参数丢弃指定数量的流元素。在这里，我们丢弃了前 20 个元素。
 
-### 流的建造者模式
+### 14.2.5 流的建造者模式
 
 在建造者设计模式（也称构造器模式）中，首先创建一个 `builder` 对象，传递给它多个构造器信息，最后执行“构造”。**Stream** 库提供了这样的 `Builder`。在这里，我们重新审视文件读取并将其转换成为单词流的过程。代码示例：
 
@@ -606,7 +598,7 @@ Not much of a cheese shop really
 
 在该类的更完整形式中，你可以添加一个标志位用于查看 `build()` 是否被调用，并且可能的话增加一个可以添加更多单词的方法。在 `Stream.Builder` 调用 `build()` 方法后继续尝试添加单词会产生一个异常。
 
-### Arrays
+### 14.2.6 Arrays
 
 `Arrays` 类中含有一个名为 `stream()` 的静态方法用于把数组转换成为流。我们可以重写 `interfaces/Machine.java` 中的主方法用于创建一个流，并将 `execute()` 应用于每一个元素。代码示例：
 
@@ -637,7 +629,7 @@ Pop
 
 `new Operations[]` 表达式动态创建了 `Operations` 对象的数组。
 
-`stream()` 同样可以产生 **IntStream**，**LongStream** 和 **DoubleStream**。
+`stream()` 同样可以产生 **`IntStream`**，**`LongStream`** 和 **`DoubleStream`**。
 
 ```java
 // streams/ArrayStreams.java
@@ -676,9 +668,9 @@ public class ArrayStreams {
 
 最后一次 `stream()` 的调用有两个额外的参数。第一个参数告诉 `stream()` 从数组的哪个位置开始选择元素，第二个参数用于告知在哪里停止。每种不同类型的 `stream()` 都有类似的操作。
 
-### 正则表达式
+### 14.2.7 正则表达式
 
-Java 的正则表达式将在[字符串](18-Strings.md)这一章节详细介绍。Java 8 在 `java.util.regex.Pattern` 中增加了一个新的方法 `splitAsStream()`。这个方法可以根据传入的公式将字符序列转化为流。但是有一个限制，输入只能是 **CharSequence**，因此不能将流作为 `splitAsStream()` 的参数。
+Java 的正则表达式将在[字符串](18-Strings.md)这一章节详细介绍。Java 8 在 `java.util.regex.Pattern` 中增加了一个新的方法 `splitAsStream()`。这个方法可以根据传入的公式将字符序列转化为流。但是有一个限制，输入只能是 **`CharSequence`**，因此不能将流作为 `splitAsStream()` 的参数。
 
 我们再一次查看将文件处理为单词流的过程。这一次，我们使用流将文件分割为单独的字符串，接着使用正则表达式将字符串转化为单词流。
 
@@ -728,13 +720,11 @@ Not much of a cheese shop really is it
 
 幸运的是，我们稍后就会知道如何解决这个问题。
 
-<!-- Intermediate Operations -->
-
-## 中间操作
+## 14.3 中间操作
 
 中间操作用于从一个流中获取对象，并将对象作为另一个流从后端输出，以连接到其他操作。
 
-### 跟踪和调试
+### 14.3.1 跟踪和调试
 
 `peek()` 操作的目的是帮助调试。它允许你无修改地查看流中的元素。代码示例：
 
@@ -765,7 +755,7 @@ Well WELL well it IT it s S s so SO so
 
 因为 `peek()` 符合无返回值的 **Consumer** 函数式接口，所以我们只能观察，无法使用不同的元素来替换流中的对象。
 
-### 流元素排序
+### 14.3.2 流元素排序
 
 在 `Randoms.java` 中，我们熟识了 `sorted()` 的默认比较器实现。其实它还有另一种形式的实现：传入一个 **Comparator** 参数。代码示例：
 
@@ -792,7 +782,7 @@ you what to the that sir leads in district And
 
 `sorted()` 预设了一些默认的比较器。这里我们使用的是反转“自然排序”。当然你也可以把 Lambda 函数作为参数传递给 `sorted()`。
 
-### 移除元素
+### 14.3.3 移除元素
 
 * `distinct()`：在 `Randoms.java` 类中的 `distinct()` 可用于消除流中的重复元素。相比创建一个 **Set** 集合，该方法的工作量要少得多。
 
@@ -835,7 +825,7 @@ public class Prime {
 
 `rangeClosed()` 包含了上限值。如果不能整除，即余数不等于 0，则 `noneMatch()` 操作返回 `true`，如果出现任何等于 0 的结果则返回 `false`。 `noneMatch()` 操作一旦有失败就会退出。
 
-### 应用函数到元素
+### 14.3.4 应用函数到元素
 
 - `map(Function)`：将函数操作应用在输入流的元素中，并将返回值传递到输出流中。
 
@@ -904,7 +894,7 @@ class FunctionMap {
 5
 ```
 
-在上面的自增示例中，我们使用 `Integer.parseInt()` 尝试将一个字符串转化为整数。如果字符串不能转化成为整数就会抛出 **NumberFormatException** 异常，我们只须回过头来将原始字符串放回到输出流中。
+在上面的自增示例中，我们使用 `Integer.parseInt()` 尝试将一个字符串转化为整数。如果字符串不能转化成为整数就会抛出 **`NumberFormatException`** 异常，我们只须回过头来将原始字符串放回到输出流中。
 
 在以上例子中，`map()` 将一个字符串映射为另一个字符串，但是我们完全可以产生和接收类型完全不同的类型，从而改变流的数据类型。下面代码示例：
 
@@ -979,7 +969,7 @@ class FunctionMap3 {
 
 遗憾的是，Java 设计者并没有尽最大努力去消除基本类型。
 
-### 在 `map()` 中组合流
+### 14.3.5 在 `map()` 中组合流
 
 假设我们现在有了一个传入的元素流，并且打算对流元素使用 `map()` 函数。现在你已经找到了一些可爱并独一无二的函数功能，但是问题来了：这个函数功能是产生一个流。我们想要产生一个元素流，而实际却产生了一个元素流的流。
 
@@ -1130,20 +1120,19 @@ is it
 
 在 `System.out.format()` 中的 `%s` 表明参数为 **String** 类型。
 
-<!-- Optional -->
-## Optional类
+## 14.4 Optional类
 
 在我们学习终端操作之前，我们必须考虑如果你在一个空流中获取元素会发生什么。我们喜欢为了“happy path”而将流连接起来，并假设流不会被中断。在流中放置 `null` 是很好的中断方法。那么是否有某种对象，可作为流元素的持有者，即使查看的元素不存在也能友好地提示我们（也就是说，不会发生异常）？
 
 **Optional** 可以实现这样的功能。一些标准流操作返回 **Optional** 对象，因为它们并不能保证预期结果一定存在。包括：
 
-- `findFirst()` 返回一个包含第一个元素的 **Optional** 对象，如果流为空则返回 **Optional.empty**
-- `findAny()` 返回包含任意元素的 **Optional** 对象，如果流为空则返回 **Optional.empty**
-- `max()` 和 `min()` 返回一个包含最大值或者最小值的 **Optional** 对象，如果流为空则返回 **Optional.empty**
+- `findFirst()` 返回一个包含第一个元素的 **Optional** 对象，如果流为空则返回 **`Optional.empty`**
+- `findAny()` 返回包含任意元素的 **Optional** 对象，如果流为空则返回 **`Optional.empty`**
+- `max()` 和 `min()` 返回一个包含最大值或者最小值的 **Optional** 对象，如果流为空则返回 **`Optional.empty`**
 
  `reduce()` 不再以 `identity` 形式开头，而是将其返回值包装在 **Optional** 中。（`identity` 对象成为其他形式的 `reduce()` 的默认结果，因此不存在空结果的风险）
 
-对于数字流 **IntStream**、**LongStream** 和 **DoubleStream**，`average()` 会将结果包装在 **Optional** 以防止流为空。
+对于数字流 **`IntStream`**、**`LongStream`** 和 **`DoubleStream`**，`average()` 会将结果包装在 **Optional** 以防止流为空。
 
 以下是对空流进行所有这些操作的简单测试：
 
@@ -1153,18 +1142,12 @@ import java.util.*;
 import java.util.stream.*;
 class OptionalsFromEmptyStreams {
     public static void main(String[] args) {
-        System.out.println(Stream.<String>empty()
-             .findFirst());
-        System.out.println(Stream.<String>empty()
-             .findAny());
-        System.out.println(Stream.<String>empty()
-             .max(String.CASE_INSENSITIVE_ORDER));
-        System.out.println(Stream.<String>empty()
-             .min(String.CASE_INSENSITIVE_ORDER));
-        System.out.println(Stream.<String>empty()
-             .reduce((s1, s2) -> s1 + s2));
-        System.out.println(IntStream.empty()
-             .average());
+        System.out.println(Stream.<String>empty().findFirst());
+        System.out.println(Stream.<String>empty().findAny());
+        System.out.println(Stream.<String>empty().max(String.CASE_INSENSITIVE_ORDER));
+        System.out.println(Stream.<String>empty().min(String.CASE_INSENSITIVE_ORDER));
+        System.out.println(Stream.<String>empty().reduce((s1, s2) -> s1 + s2));
+        System.out.println(IntStream.empty().average());
     }
 }
 ```
@@ -1180,7 +1163,7 @@ Optional.empty
 OptionalDouble.empty
 ```
 
-当流为空的时候你会获得一个 **Optional.empty** 对象，而不是抛出异常。**Optional** 拥有 `toString()` 方法可以用于展示有用信息。
+当流为空的时候你会获得一个 **`Optional.empty`** 对象，而不是抛出异常。**Optional** 拥有 `toString()` 方法可以用于展示有用信息。
 
 注意，空流是通过 `Stream.<String>empty()` 创建的。如果你在没有任何上下文环境的情况下调用 `Stream.empty()`，Java 并不知道它的数据类型；这个语法解决了这个问题。如果编译器拥有了足够的上下文信息，比如：
 
@@ -1219,14 +1202,12 @@ Nothing inside!
 
 当你接收到 **Optional** 对象时，应首先调用 `isPresent()` 检查其中是否包含元素。如果存在，可使用 `get()` 获取。
 
-<!-- Convenience Functions -->
-
-### 便利函数
+### 14.4.1 便利函数
 
 有许多便利函数可以解包 **Optional** ，这简化了上述“对所包含的对象的检查和执行操作”的过程：
 
 - `ifPresent(Consumer)`：当值存在时调用 **Consumer**，否则什么也不做。
-- `orElse(otherObject)`：如果值存在则直接返回，否则生成 **otherObject**。
+- `orElse(otherObject)`：如果值存在则直接返回，否则生成 **`otherObject`**。
 - `orElseGet(Supplier)`：如果值存在则直接返回，否则使用 **Supplier** 函数生成一个可替代对象。
 - `orElseThrow(Supplier)`：如果值存在直接返回，否则使用 **Supplier** 函数生成一个异常。
 
@@ -1300,15 +1281,13 @@ Caught java.lang.Exception: Supplied
 
 `orElseThrow()` 通过 **catch** 关键字来捕获抛出的异常。更多细节，将在 [异常](./15-Exceptions.md) 这一章节中学习。
 
-<!-- Creating Optionals -->
-
-### 创建 Optional
+### 14.4.2 创建 Optional
 
 当我们在自己的代码中加入 **Optional** 时，可以使用下面 3 个静态方法：
 
 - `empty()`：生成一个空 **Optional**。
 - `of(value)`：将一个非空值包装到 **Optional** 里。
-- `ofNullable(value)`：针对一个可能为空的值，为空时自动生成 **Optional.empty**，否则将值包装在 **Optional** 中。
+- `ofNullable(value)`：针对一个可能为空的值，为空时自动生成 **`Optional.empty`**，否则将值包装在 **Optional** 中。
 
 下面来看看它是如何工作的。代码示例：
 
@@ -1352,13 +1331,13 @@ Null
 
 我们不能通过传递 `null` 到 `of()` 来创建 `Optional` 对象。最安全的方法是， 使用 `ofNullable()` 来优雅地处理 `null`。
 
-### Optional 对象操作
+### 14.4.3 Optional 对象操作
 
 当我们的流管道生成了 **Optional** 对象，下面 3 个方法可使得 **Optional** 的后续能做更多的操作：
 
 - `filter(Predicate)`：将 **Predicate** 应用于 **Optional** 中的内容并返回结果。当 **Optional** 不满足 **Predicate** 时返回空。如果 **Optional** 为空，则直接返回。
 
-- `map(Function)`：如果 **Optional** 不为空，应用 **Function**  于 **Optional** 中的内容，并返回结果。否则直接返回 **Optional.empty**。
+- `map(Function)`：如果 **Optional** 不为空，应用 **Function**  于 **Optional** 中的内容，并返回结果。否则直接返回 **`Optional.empty`**。
 
 - `flatMap(Function)`：同 `map()`，但是提供的映射函数将结果包装在 **Optional** 对象中，因此 `flatMap()` 不会在最后进行任何包装。
 
@@ -1440,7 +1419,7 @@ Optional.empty
 
 即使输出看起来像流，特别是 `test()` 中的 for 循环。每一次的 for 循环时重新启动流，然后根据 for 循环的索引跳过指定个数的元素，这就是它最终在流中的每个连续元素上的结果。接下来调用 `findFirst()` 获取剩余元素中的第一个元素，结果会包装在 **Optional** 中。
 
-**注意**，不同于普通 for 循环，这里的索引值范围并不是 `i < elements.length`， 而是 `i <= elements.length`。所以最后一个元素实际上超出了流。方便的是，这将自动成为 **Optional.empty**，你可以在每一个测试的结尾中看到。
+**注意**，不同于普通 for 循环，这里的索引值范围并不是 `i < elements.length`， 而是 `i <= elements.length`。所以最后一个元素实际上超出了流。方便的是，这将自动成为 **`Optional.empty`**，你可以在每一个测试的结尾中看到。
 
 同 `map()` 一样 ， `Optional.map()` 应用于函数。它仅在 **Optional** 不为空时才应用映射函数，并将 **Optional** 的内容提取到映射函数。代码示例：
 
@@ -1518,7 +1497,7 @@ Optional[5]
 Optional.empty
 ```
 
-映射函数的返回结果会自动包装成为 **Optional**。**Optional.empty** 会被直接跳过。
+映射函数的返回结果会自动包装成为 **Optional**。**`Optional.empty`** 会被直接跳过。
 
 **Optional** 的 `flatMap()` 应用于已生成 **Optional** 的映射函数，所以 `flatMap()` 不会像 `map()` 那样将结果封装在 **Optional** 中。代码示例：
 
@@ -1600,8 +1579,7 @@ Optional.empty
 
 同 `map()`，`flatMap()` 将提取非空 **Optional** 的内容并将其应用在映射函数。唯一的区别就是 `flatMap()` 不会把结果包装在 **Optional** 中，因为映射函数已经被包装过了。在如上示例中，我们已经在每一个映射函数中显式地完成了包装，但是很显然 `Optional.flatMap()` 是为那些自己已经生成 **Optional** 的函数而设计的。
 
-<!-- Streams of Optionals -->
-### Optional 流
+### 14.4.4 Optional 流
 
 假设你的生成器可能产生 `null` 值，那么当用它来创建流时，你会自然地想到用  **Optional** 来包装元素。如下是它的样子，代码示例：
 
@@ -1676,16 +1654,12 @@ Signal(dash)
 
 在这里，我们使用 `filter()` 来保留那些非空 **Optional**，然后在 `map()` 中使用 `get()` 获取元素。由于每种情况都需要定义“空值”的含义，所以通常我们要为每个应用程序采用不同的方法。
 
-<!-- Terminal Operations -->
-
-## 终端操作
+## 14.5 终端操作
 
 
 以下操作将会获取流的最终结果。至此我们无法再继续往后传递流。可以说，终端操作总是我们在流管道中所做的最后一件事。
 
-<!-- Convert to an Array -->
-
-### 数组
+### 14.5.1 数组
 - `toArray()`：将流转换成适当类型的数组。
 - `toArray(generator)`：在特殊情况下，生成自定义类型的数组。
 
@@ -1706,8 +1680,7 @@ public class RandInts {
 
 上例将100个数值范围在 0 到 1000 之间的随机数流转换成为数组并将其存储在 `rints` 中。这样一来，每次调用 `rands()` 的时候可以重复获取相同的整数流。
 
-<!-- Apply a Final Operation to Every Element -->
-### 循环
+### 14.5.2 循环
 
 - `forEach(Consumer)`常见如 `System.out::println` 作为 **Consumer** 函数。
 - `forEachOrdered(Consumer)`： 保证 `forEach` 按照原始流顺序操作。
@@ -1752,16 +1725,14 @@ public class ForEach {
 
 在最后一个流中，同时使用了 `parallel()` 和 `forEachOrdered()` 来强制保持原始流顺序。因此，对非并行流使用 `forEachOrdered()` 是没有任何影响的。
 
-<!-- Collecting -->
-
-### 集合
+### 14.5.3 集合
 
 - `collect(Collector)`：使用 **Collector** 收集流元素到结果集合中。
-- `collect(Supplier, BiConsumer, BiConsumer)`：同上，第一个参数 **Supplier** 创建了一个新结果集合，第二个参数 **BiConsumer** 将下一个元素包含到结果中，第三个参数 **BiConsumer** 用于将两个值组合起来。
+- `collect(Supplier, BiConsumer, BiConsumer)`：同上，第一个参数 **Supplier** 创建了一个新结果集合，第二个参数 **`BiConsumer`** 将下一个元素包含到结果中，第三个参数 **`BiConsumer`** 用于将两个值组合起来。
 
 在这里我们只是简单介绍了几个 **Collectors** 的运用示例。实际上，它还有一些非常复杂的操作实现，可通过查看 `java.util.stream.Collectors` 的 API 文档了解。例如，我们可以将元素收集到任意一种特定的集合中。
 
-假设我们现在为了保证元素有序，将元素存储在 **TreeSet** 中。**Collectors** 里面没有特定的 `toTreeSet()`，但是我们可以通过将集合的构造函数引用传递给 `Collectors.toCollection()`，从而构建任何类型的集合。下面我们来将一个文件中的单词收集到 **TreeSet** 集合中。代码示例：
+假设我们现在为了保证元素有序，将元素存储在 **`TreeSet`** 中。**Collectors** 里面没有特定的 `toTreeSet()`，但是我们可以通过将集合的构造函数引用传递给 `Collectors.toCollection()`，从而构建任何类型的集合。下面我们来将一个文件中的单词收集到 **`TreeSet`** 集合中。代码示例：
 
 ```java
 // streams/TreeSetOfWords.java
@@ -1796,12 +1767,7 @@ stream, streams, throws, toCollection, trim, util,
 void, words2]
 ```
 
-**Files.**`lines()` 打开 **Path** 并将其转换成为行流。下一行代码将匹配一个或多个非单词字符（`\\w+`）行进行分割，然后使用 **Arrays.**`stream()` 将其转化成为流，并将结果展平映射成为单词流。使用 `matches(\\d+)` 查找并移除全数字字符串（**注意**,`words2` 是通过的）。接下来我们使用 **String.**`trim()` 去除单词两边的空白，`filter()` 过滤所有长度小于3的单词，紧接着只获取100个单词，最后将其保存到 **TreeSet** 中。
-
-<!-- 
-Files.lines() opens the Path and turns it into a Stream oflines. The next line splits those lines on boundaries of one or morenon-word characters (\\W+), which produces an array which is turnedinto a Stream with Arrays.stream(), and the result is flat-mapped back into a Stream of words. The matches(\\d+) finds
-and removes Strings that are all digits (note that words2 makes itthrough). Next we apply String.trim() to shave off anysurrounding whitespace, filter() out any words less than a lengthof three, take only the first 100 words, and finally put them into aTreeSet.
- -->
+**Files.**`lines()` 打开 **Path** 并将其转换成为行流。下一行代码将匹配一个或多个非单词字符（`\\w+`）行进行分割，然后使用 **Arrays.**`stream()` 将其转化成为流，并将结果展平映射成为单词流。使用 `matches(\\d+)` 查找并移除全数字字符串（**注意**,`words2` 是通过的）。接下来我们使用 **String.**`trim()` 去除单词两边的空白，`filter()` 过滤所有长度小于3的单词，紧接着只获取100个单词，最后将其保存到 **`TreeSet`** 中。
 
 我们也可以在流中生成 **Map**。代码示例：
 
@@ -1889,11 +1855,9 @@ cheese
 
 在这里， **ArrayList** 的方法已经执行了你所需要的操作，但是似乎更有可能的是，如果你必须使用这种形式的 `collect()`，则必须自己创建特殊的定义。
 
-<!-- Combining All Stream Elements -->
+### 14.5.4 组合
 
-### 组合
-
-- `reduce(BinaryOperator)`：使用 **BinaryOperator** 来组合所有流中的元素。因为流可能为空，其返回值为 **Optional**。
+- `reduce(BinaryOperator)`：使用 **`BinaryOperator`** 来组合所有流中的元素。因为流可能为空，其返回值为 **Optional**。
 - `reduce(identity, BinaryOperator)`：功能同上，但是使用 **identity** 作为其组合的初始值。因此如果流为空，**identity** 就是结果。
 - `reduce(identity, BiFunction, BinaryOperator)`：更复杂的使用形式（暂不介绍），这里把它包含在内，因为它可以提高效率。通常，我们可以显式地组合 `map()` 和 `reduce()` 来更简单的表达它。
 
@@ -1950,8 +1914,7 @@ Lambda 表达式中的第一个参数 `fr0` 是上一次调用 `reduce()` 的结
 
 `reduce()` 中的 Lambda 表达式使用了三元表达式来获取结果，当其长度小于 50 的时候获取 `fr0` 否则获取序列中的下一个值 `fr1`。当取得第一个长度小于 50 的 `Frobnitz`，只要得到结果就会忽略其他。这是个非常奇怪的约束， 也确实让我们对 `reduce()` 有了更多的了解。
 
-<!-- Matching -->
-### 匹配
+### 14.5.5 匹配
 
 - `allMatch(Predicate)` ：如果流的每个元素根据提供的 **Predicate** 都返回 true 时，结果返回为 true。在第一个 false 时，则停止执行计算。
 - `anyMatch(Predicate)`：如果流中的任意一个元素根据提供的 **Predicate** 返回 true 时，结果返回为 true。在第一个 false 是停止执行计算。
@@ -1999,14 +1962,14 @@ public class Matching {
 1 2 3 4 5 6 7 8 9 true
 ```
 
-**BiPredicate** 是一个二元谓词，它只能接受两个参数且只返回 true 或者 false。它的第一个参数是我们要测试的流，第二个参数是一个谓词 **Predicate**。**Matcher** 适用于所有的 **Stream::\*Match** 方法，所以我们可以传递每一个到 `show()` 中。`match.test()` 的调用会被转换成 **Stream::\*Match** 函数的调用。
+**`BiPredicate`** 是一个二元谓词，它只能接受两个参数且只返回 true 或者 false。它的第一个参数是我们要测试的流，第二个参数是一个谓词 **Predicate**。**Matcher** 适用于所有的 **Stream::\*Match** 方法，所以我们可以传递每一个到 `show()` 中。`match.test()` 的调用会被转换成 **Stream::\*Match** 函数的调用。
 
 `show()` 获取两个参数，**Matcher** 匹配器和用于表示谓词测试 **n < val** 中最大值的 **val**。这个方法生成一个1-9之间的整数流。`peek()` 是用于向我们展示测试在短路之前的情况。从输出中可以看到每次都发生了短路。
 
-### 查找
+### 14.5.6 查找
 
-- `findFirst()`：返回第一个流元素的 **Optional**，如果流为空返回 **Optional.empty**。
-- `findAny(`：返回含有任意流元素的 **Optional**，如果流为空返回 **Optional.empty**。
+- `findFirst()`：返回第一个流元素的 **Optional**，如果流为空返回 **`Optional.empty`**。
+- `findAny(`：返回含有任意流元素的 **Optional**，如果流为空返回 **`Optional.empty`**。
 
 代码示例：
 
@@ -2018,11 +1981,9 @@ import static streams.RandInts.*;
 public class SelectElement {
     public static void main(String[] args) {
         System.out.println(rands().findFirst().getAsInt());
-        System.out.println(
-                rands().parallel().findFirst().getAsInt());
+        System.out.println(rands().parallel().findFirst().getAsInt());
         System.out.println(rands().findAny().getAsInt());
-        System.out.println(
-                rands().parallel().findAny().getAsInt());
+        System.out.println(rands().parallel().findAny().getAsInt());
     }
 }
 ```
@@ -2068,9 +2029,7 @@ three
 
 `reduce()`  的参数只是用最后一个元素替换了最后两个元素，最终只生成最后一个元素。如果为数字流，你必须使用相近的数字 **Optional** 类型（ numeric optional type），否则使用 **Optional** 类型，就像上例中的 `Optional<String>`。
 
-<!-- Informational -->
-
-### 信息
+### 14.5.7 信息
 
 - `count()`：流中的元素个数。
 - `max(Comparator)`：根据所传入的 **Comparator** 所决定的“最大”元素。
@@ -2109,8 +2068,7 @@ you
 
 `min()` 和 `max()` 的返回类型为 **Optional**，这需要我们使用 `orElse()`来解包。
 
-<!-- Information for Numeric Streams -->
-### 数字流信息
+### 14.5.8 数字流信息
 
 - `average()` ：求取流元素平均值。
 - `max()` 和 `min()`：数值流操作无需 **Comparator**。
@@ -2144,10 +2102,6 @@ IntSummaryStatistics{count=100, sum=50794, min=8, average=507.940000, max=998}
 
 上例操作对于 **LongStream** 和 **DoubleStream** 同样适用。
 
-## 本章小结
+## 14.6 本章小结
 
 流式操作改变并极大地提升了 Java 语言的可编程性，并可能极大地阻止了 Java 编程人员向诸如 Scala 这种函数式语言的流转。在本书的剩余部分，我们将尽可能地使用流。
-
-<!-- 分页 -->
-
-<div style="page-break-after: always;"></div>
