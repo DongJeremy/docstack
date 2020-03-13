@@ -268,11 +268,9 @@ Woodwind.play() MIDDLE_C
 
 创建抽象类和抽象方法是有帮助的，因为它们使得类的抽象性很明确，并能告知用户和编译器使用意图。抽象类同时也是一种有用的重构工具，使用它们使得我们很容易地将沿着继承层级结构上移公共方法。
 
-<!-- Interfaces -->
-
 ## 10.2 接口创建
 
-使用 **interface** 关键字创建接口。在本书中，interface 和 class 一样随处常见，除非特指关键字 **interface**，其他情况下都采用正常字体书写 interface。
+使用 **interface** 关键字创建接口。在本书中，`interface` 和 `class` 一样随处常见，除非特指关键字 **interface**，其他情况下都采用正常字体书写 `interface`。
 
 描述 Java 8 之前的接口更加容易，因为它们只允许抽象方法。像下面这样：
 
@@ -292,7 +290,7 @@ public interface PureInterface {
 
 一个接口表示：所有实现了该接口的类看起来都像这样。因此，任何使用某特定接口的代码都知道可以调用该接口的哪些方法，而且仅需知道这些。所以，接口被用来建立类之间的协议。（一些面向对象编程语言中，使用 protocol 关键字完成相同的功能。）
 
-Java 8 中接口稍微有些变化，因为 Java 8 允许接口包含默认方法和静态方法——基于某些重要原因，看到后面你会理解。接口的基本概念仍然没变，介于类型之上、实现之下。接口与抽象类最明显的区别可能就是使用上的惯用方式。接口的典型使用是代表一个类的类型或一个形容词，如 Runnable 或 Serializable，而抽象类通常是类层次结构的一部分或一件事物的类型，如 String 或 ActionHero。
+Java 8 中接口稍微有些变化，因为 Java 8 允许接口包含默认方法和静态方法——基于某些重要原因，看到后面你会理解。接口的基本概念仍然没变，介于类型之上、实现之下。接口与抽象类最明显的区别可能就是使用上的惯用方式。接口的典型使用是代表一个类的类型或一个形容词，如 `Runnable` 或 `Serializable`，而抽象类通常是类层次结构的一部分或一件事物的类型，如 `String` 或 `ActionHero`。
 
 使用关键字 **interface** 而不是 **class** 来创建接口。和类一样，需要在关键字 **interface** 前加上 **public** 关键字（但只是在接口名与文件名相同的情况下），否则接口只有包访问权限，只能在接口相同的包下才能使用它。
 
@@ -362,7 +360,7 @@ firstMethod
 secondMethod
 ```
 
-如果我们在 **AnInterface** 中增加一个新方法 `newMethod()`，而在 **AnImplementation** 中没有实现它，编译器就会报错：
+如果我们在 **`AnInterface`** 中增加一个新方法 `newMethod()`，而在 **`AnImplementation`** 中没有实现它，编译器就会报错：
 
 ```
 AnImplementation.java:3:error: AnImplementation is not abstract and does not override abstract method newMethod() in AnInterface
