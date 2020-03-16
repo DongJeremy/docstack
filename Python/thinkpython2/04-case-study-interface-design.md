@@ -15,21 +15,27 @@ turtle模块
 
 打开Python解释器，输入以下代码，检查你是否安装了 `turltle` 模块：
 
-    >>> import turtle
-    >>> bob = turtle.Turtle()
+```python
+>>> import turtle
+>>> bob = turtle.Turtle()
+```
 
 上述代码运行后，应该会新建一个窗口，窗口中间有一个小箭头，代表的就是海龟。现在关闭窗口。
 
 新建一个名叫 `mypolygon.py` 的文件，输入以下代码：
 
-    import turtle
-    bob = turtle.Turtle()
-    print(bob)
-    turtle.mainloop()
+```python
+import turtle
+bob = turtle.Turtle()
+print(bob)
+turtle.mainloop()
+```
 
 `turtle` 模块（小写的t）提供了一个叫作 `Turtle`的函数（大写的T），这个函数会创建一个 `Turtle` 对象，我们将其赋值给名为`bob` 的变量。打印 `bob` 的话，会输出下面这样的结果：
 
-    <turtle.Turtle object at 0xb7bfbf4c>
+```python
+<turtle.Turtle object at 0xb7bfbf4c>
+```
 
 这意味着，`bob` 指向一个类型为Turtle的对象，这个类型是由 `turtle`模块定义的。
 
@@ -37,7 +43,9 @@ turtle模块
 
 创建了一个 `Turtle` 对象之后，你可以调用 **方法（method）**来在窗口中移动该对象。方法与函数类似，但是其语法略有不同。例如，要让海龟向前走：
 
-    bob.fd(100)
+```python
+bob.fd(100)
+```
 
 方法 `fd` 与我们称之为 `bob`的对象是相关联的。调用方法就像提出一个请求：你在请求 `bob` 往前走。
 
@@ -45,16 +53,15 @@ turtle模块
 
 `Turtle` 对象中你能调用的其他方法还包括：让它向后走的 `bk` ，向左转的`lt` ，向右转的 `rt` 。 `lt` 和 `rt` 这两个方法接受的实参是角度。
 
-另外，每个 `Turtle` 都握着一支笔，不是落笔就是抬笔；如果落笔了，`Turtle`
-就会在移动时留下痕迹。`pu` 和 `pd` 这两个方法分别代表“抬笔（pen
-up）”和“落笔（pen down）”。
+另外，每个 `Turtle` 都握着一支笔，不是落笔就是抬笔；如果落笔了，`Turtle` 就会在移动时留下痕迹。`pu` 和 `pd` 这两个方法分别代表“抬笔（pen up）”和“落笔（pen down）”。
 
-如果要画一个直角（right angle），请在程序中添加以下代码（放在创建 `bob`
-之后，调用 `mainloop` 之前）：
+如果要画一个直角（right angle），请在程序中添加以下代码（放在创建 `bob` 之后，调用 `mainloop` 之前）：
 
-    bob.fd(100)
-    bob.lt(90)
-    bob.fd(100)
+```python
+bob.fd(100)
+bob.lt(90)
+bob.fd(100)
+```
 
 当你运行此程序时，你应该会看到 `bob`
 先朝东移动，然后向北移动，同时在身后留下两条线段（line segment）。
@@ -172,10 +179,7 @@ margin）对齐， 表示 `for` 循环和函数定义结束。
     alice = Turtle()
     square(alice)
 
-将一部分代码包装在函数里被称作 **encapsulation（封装）**。
-封装的好处之一，为这些代码赋予一个名字，
-这充当了某种文档说明。另一个好处是，如果你重复使用这些代码，
-调用函数两次比拷贝粘贴函数体要更加简洁！
+将一部分代码包装在函数里被称作 **encapsulation（封装）**。封装的好处之一，为这些代码赋予一个名字，这充当了某种文档说明。另一个好处是，如果你重复使用这些代码，调用函数两次比拷贝粘贴函数体要更加简洁！
 
 泛化
 ----
@@ -228,13 +232,15 @@ division）出现偏差。一个简单的解决办法是这样计算 `angle`
 下一个练习是编写接受半径r作为形参的 `circle` 函数。 下面是一个使用
 `polygon` 画一个50边形的简单解法：
 
-    import math
-    
-    def circle(t, r):
-        circumference = 2 * math.pi * r
-        n = 50
-        length = circumference / n
-        polygon(t, n, length)
+```python
+import math
+
+def circle(t, r):
+    circumference = 2 * math.pi * r
+    n = 50
+    length = circumference / n
+    polygon(t, n, length)
+```
 
 函数的第一行通过半径r计算圆的周长，公式是$2 \pi r$。 由于用了 `math.pi`
 ，我们需要导入 `math` 模块。 按照惯例，`import`

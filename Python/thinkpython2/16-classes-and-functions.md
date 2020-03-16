@@ -10,17 +10,17 @@
 时间
 ----
 
-再举一个程序员自定义类型的例子，我们定义一个叫 `Time`
-的类，用于记录时间。 这个类的定义如下：
+再举一个程序员自定义类型的例子，我们定义一个叫 `Time` 的类，用于记录时间。 这个类的定义如下：
 
-    class Time:
-        """Represents the time of day.
+```python
+class Time:
+    """Represents the time of day.
 
-        attributes: hour, minute, second
-        """
+    attributes: hour, minute, second
+    """
+```
 
-我们可以创建一个新的 `Time` 类对象，并且给它的属性 `hour` , `minutes` 和
-`seconds` 赋值：
+我们可以创建一个新的 `Time` 类对象，并且给它的属性 `hour` , `minutes` 和 `seconds` 赋值：
 
     time = Time()
     time.hour = 11
@@ -37,7 +37,7 @@
 ，若 `t1` 的时间在 `t2` 之后， 则返回 `True` ，否则返回 `False`
 。挑战：不要使用 `if` 语句。
 
-![图16-1：对象图](figs/time.png)
+![图16-1：对象图](images/time.png)
 
 纯函数
 ------
@@ -73,12 +73,12 @@ function）**，因为它除了返回一个值以外，并不修改作为参数�
     >>> start.hour = 9
     >>> start.minute = 45
     >>> start.second =  0
-
+    
     >>> duration = Time()
     >>> duration.hour = 1
     >>> duration.minute = 35
     >>> duration.second = 0
-
+    
     >>> done = add_time(start, duration)
     >>> print_time(done)
     10:80:00
@@ -94,15 +94,15 @@ function）**，因为它除了返回一个值以外，并不修改作为参数�
         sum.hour = t1.hour + t2.hour
         sum.minute = t1.minute + t2.minute
         sum.second = t1.second + t2.second
-
+    
         if sum.second >= 60:
             sum.second -= 60
             sum.minute += 1
-
+    
         if sum.minute >= 60:
             sum.minute -= 60
             sum.hour += 1
-
+    
         return sum
 
 这个函数虽然正确，但是它开始变得臃肿。我们会在后面看到一个较短的版本。
@@ -118,11 +118,11 @@ function）**，因为它除了返回一个值以外，并不修改作为参数�
 
     def increment(time, seconds):
         time.second += seconds
-
+    
         if time.second >= 60:
             time.second -= 60
             time.minute += 1
-
+    
         if time.minute >= 60:
             time.minute -= 60
             time.hour += 1

@@ -1,22 +1,16 @@
 第十五章：类和对象
 ==================
 
-目前你已经知道如何使用函数来组织你的代码，同时用内置的类型来管理数据。
-下一步我们将学习“面向对象编程”，即使用 程序员定义的类来组织代码和数据。
-面向对象编程是一个很大的话题，讲完需要一些章节。
+目前你已经知道如何使用函数来组织你的代码，同时用内置的类型来管理数据。下一步我们将学习“面向对象编程”，即使用 程序员定义的类来组织代码和数据。面向对象编程是一个很大的话题，讲完需要一些章节。
 
-本章的示例代码可以在<http://thinkpython2.com/code/Point1.py> 获取；
-练习题的答案可以在<http://thinkpython2.com/code/Point1_soln.py> 获取。
+本章的示例代码可以在<http://thinkpython2.com/code/Point1.py> 获取；练习题的答案可以在<http://thinkpython2.com/code/Point1_soln.py> 获取。
 
 程序员自定义类型
 ----------------
 
-我们已经使用过了许多 Python 的内置类型；
-现在我们要定义一个新类型。举个例子，我们来创建一个叫做 `Point`
-的类型，代表二维空间中的一个点。
+我们已经使用过了许多 Python 的内置类型；现在我们要定义一个新类型。举个例子，我们来创建一个叫做 `Point` 的类型，代表二维空间中的一个点。
 
-在数学记法中，点通常被写成在两个小括号中用一个逗号分隔坐标的形式。
-例如$(0,0)$代表原点，$(x,y)$代表原点向右 x 个单位，向上 y 个单位的点。
+在数学记法中，点通常被写成在两个小括号中用一个逗号分隔坐标的形式。例如$(0,0)$代表原点，$(x,y)$代表原点向右 x 个单位，向上 y 个单位的点。
 
 在 Python 中，有几种表示点的方法：
 
@@ -26,36 +20,37 @@
 
 创建一个新类型比其他方法更复杂，但是它的优势一会儿会显现出来。
 
-程序员自定义类型( A programmer-defined type )也被称作**类（class）**。
-像这样定义一个对象：
+程序员自定义类型( A programmer-defined type )也被称作**类（class）**。像这样定义一个对象：
 
-    class Point:
-        """Represents a point in 2-D space."""
+```python
+class Point:
+    """Represents a point in 2-D space."""
+```
 
-头部语句表明新类的名称是 `Point` 。
-主体部分是文档字符串，用来解释这个类的用途。
-你可以在一个类的定义中定义变量和函数，稍后会讨论这个。
+头部语句表明新类的名称是 `Point` 。主体部分是文档字符串，用来解释这个类的用途。你可以在一个类的定义中定义变量和函数，稍后会讨论这个。
 
 定义一个叫做 `Point` 的类将创建了一个**类对象（class object）**。
 
-    >>> Point
-    <class '__main__.Point'>
+```python
+>>> Point
+<class '__main__.Point'>
+```
 
 由于 `Point` 是定义在顶层的，所以它的“全名”是`__main__.Point`。
 
-类对象就像是一个用来创建对象的工厂。
-要创建一个点，你可以像调用函数那样调用 `Point` 。
+类对象就像是一个用来创建对象的工厂。要创建一个点，你可以像调用函数那样调用 `Point` 。
 
-    >>> blank = Point()
-    >>> blank
-    <__main__.Point object at 0xb7e9d3ac>
+```python
+>>> blank = Point()
+>>> blank
+<__main__.Point object at 0xb7e9d3ac>
+```
 
 返回值是一个 `Point` 对象的引用，我们将它赋值给 `blank` 。
 
 创建一个新对象的过程叫做**实例化（instantiation）**，这个新对象叫做这个类的一个**实例（instance）**。
 
-当你试图打印一个实例，Python 会告诉你它属于哪个类，
-以及它在内存中的存储地址（前缀0x代表紧跟后面的数是以十六进制表示的）。
+当你试图打印一个实例，Python 会告诉你它属于哪个类，以及它在内存中的存储地址（前缀0x代表紧跟后面的数是以十六进制表示的）。
 
 每一个对象都是某种类的实例，所以对象和实例可以互换。但是在这章我用“实例”来表示我在讨论程序员自定义类型。
 
@@ -64,32 +59,30 @@
 
 你可以使用点标记法向一个实例进行赋值操作：
 
-    >>> blank.x = 3.0
-    >>> blank.y = 4.0
+```python
+>>> blank.x = 3.0
+>>> blank.y = 4.0
+```
 
-这个语法类似于从一个模块中使用变量的语法，比如 `math.pi` 和
-`string.whitespace` 。
-不过在这个例子中，我们是给一个类中已命名的元素赋值。
-这类元素叫做**属性（attributes）**。
+这个语法类似于从一个模块中使用变量的语法，比如 `math.pi` 和 `string.whitespace` 。不过在这个例子中，我们是给一个类中已命名的元素赋值。这类元素叫做**属性（attributes）**。
 
-作为名词的时候，“属性”的英文“AT-trib-ute”的重音在第一个音节上，
-作为动词的时候，“a-TRIB-ute”重音在第二个音节上。
+作为名词的时候，“属性”的英文“AT-trib-ute”的重音在第一个音节上，作为动词的时候，“a-TRIB-ute”重音在第二个音节上。
 
-下面这张图展示了这些赋值操作的结果。说明一个对象及其属性的状态图叫做**对象图（object
-diagram）**；见图fig.point。
+下面这张图展示了这些赋值操作的结果。说明一个对象及其属性的状态图叫做**对象图（object diagram）**；见图fig.point。
 
-![图15-1：对象图](figs/point.png)
+![图15-1：对象图](images/point.png)
 
-变量 `blank` 引用了一个 `Point` 类，这个类拥有了两个属性。
-每个属性都引用了一个浮点数。
+变量 `blank` 引用了一个 `Point` 类，这个类拥有了两个属性。每个属性都引用了一个浮点数。
 
 你可以使用相同的语法读取一个属性的值：
 
-    >>> blank.y
-    4.0
-    >>> x = blank.x
-    >>> x
-    3.0
+```python
+>>> blank.y
+4.0
+>>> x = blank.x
+>>> x
+3.0
+```
 
 表达式 `blank.x` 的意思是，“前往 `blank` 所引用的对象并且获取 `x`
 的值”。 在这个例子中，我们将获取到的值赋值给了一个叫做 `x` 的变量。 变量
@@ -123,10 +116,7 @@ diagram）**；见图fig.point。
 矩形
 ----
 
-有时候，一个对象该拥有哪些属性是显而易见的，但有时候你需要好好考虑一番。
-比如，你需要设计一个代表矩形的类。
-为了描述一个矩形的位置和大小，你需要设计哪些属性呢？
-角度是可以忽略的；为了使事情更简单，我们假设矩形是水平或者竖直的。
+有时候，一个对象该拥有哪些属性是显而易见的，但有时候你需要好好考虑一番。比如，你需要设计一个代表矩形的类。为了描述一个矩形的位置和大小，你需要设计哪些属性呢？角度是可以忽略的；为了使事情更简单，我们假设矩形是水平或者竖直的。
 
 至少有两种可能的设计：
 
@@ -137,17 +127,17 @@ diagram）**；见图fig.point。
 
 下面是类的定义：
 
-    class Rectangle:
-        """Represents a rectangle.
+```python
+class Rectangle:
+    """Represents a rectangle.
 
-        attributes: width, height, corner.
-        """
+    attributes: width, height, corner.
+    """
+```
 
-文档字符串中列出了属性：`width` 和 `height` 是数字； `corner`是一个
-`Point` 对象，代表左下角的那个点。
+文档字符串中列出了属性：`width` 和 `height` 是数字； `corner`是一个 `Point` 对象，代表左下角的那个点。
 
-为了描述一个矩形，你需要实例化一个 `Rectangle`
-对象，并且为它的属性赋值：
+为了描述一个矩形，你需要实例化一个 `Rectangle` 对象，并且为它的属性赋值：
 
     box = Rectangle()
     box.width = 100.0
@@ -156,13 +146,11 @@ diagram）**；见图fig.point。
     box.corner.x = 0.0
     box.corner.y = 0.0
 
-表达式 `box.corner.x` 的意思是， “前往 `box` 所引用的对象，找到叫做
-`corner` 的属性； 然后前往 `corner` 所引用的对象，找到叫做 `x` 的属性。”
+表达式 `box.corner.x` 的意思是， “前往 `box` 所引用的对象，找到叫做 `corner` 的属性； 然后前往 `corner` 所引用的对象，找到叫做 `x` 的属性。”
 
-![图15-2：对象图](figs/rectangle.png)
+![图15-2：对象图](images/rectangle.png)
 
-fig.rectangle展示了这个对象的状态。
-一个对象作为另一个对象的属性叫做**嵌套（embedded）**。
+fig.rectangle展示了这个对象的状态。一个对象作为另一个对象的属性叫做**嵌套（embedded）**。
 
 实例作为返回值
 --------------
@@ -227,7 +215,7 @@ fig.rectangle展示了这个对象的状态。
     >>> p1 = Point()
     >>> p1.x = 3.0
     >>> p1.y = 4.0
-
+    
     >>> import copy
     >>> p2 = copy.copy(p1)
 
@@ -258,10 +246,9 @@ fig.rectangle展示了这个对象的状态。
     >>> box2.corner is box.corner
     True
 
-![图15-3：对象图](figs/rectangle2.png)
+![图15-3：对象图](images/rectangle2.png)
 
-fig.rectangle2展示了相应的对象图。 这个操作叫做**浅复制（shallow
-copy）**，因为它仅复制了对象以及其包含的引用， 但未复制嵌套的对象。
+fig.rectangle2展示了相应的对象图。 这个操作叫做**浅复制（shallow copy）**，因为它仅复制了对象以及其包含的引用， 但未复制嵌套的对象。
 
 对大多数应用来说，这并非是你想要的结果。 在这个例子中，对其中一个
 `Rectangle` 对象调用`grow_rectangle`并不会影响到另外一个，
@@ -287,42 +274,49 @@ copy）**，因为它仅复制了对象以及其包含的引用， 但未复制�
 调试
 ----
 
-当你开始学习对象的时候，你可能会遇到一些新的异常。
-如果你访问一个不存在的属性，你会得到 `Attributeerror` 的错误提示：
+当你开始学习对象的时候，你可能会遇到一些新的异常。如果你访问一个不存在的属性，你会得到 `Attributeerror` 的错误提示：
 
-    >>> p = Point()
-    >>> p.x = 3
-    >>> p.y = 4
-    >>> p.z
-    AttributeError: Point instance has no attribute 'z'
+```python
+>>> p = Point()
+>>> p.x = 3
+>>> p.y = 4
+>>> p.z
+AttributeError: Point instance has no attribute 'z'
+```
 
 如果你不确定一个对象的类型，你可以询问：
 
-    >>> type(p)
-    <class '__main__.Point'>
+```python
+>>> type(p)
+<class '__main__.Point'>
+```
 
 你也可以用 `isinstance` 来检查某个对象是不是某个类的实例。
 
-    >>> isinstance(p, Point)
-    True
+```python
+>>> isinstance(p, Point)
+True
+```
 
-如果你不确定一个对象是否拥有某个属性， 你可以使用内置函数 `hasattr`
-检查：
+如果你不确定一个对象是否拥有某个属性， 你可以使用内置函数 `hasattr` 检查：
 
-    >>> hasattr(p, 'x')
-    True
-    >>> hasattr(p, 'z')
-    False
+```python
+>>> hasattr(p, 'x')
+True
+>>> hasattr(p, 'z')
+False
+```
 
-第一个参数可以是任何对象；
-第二个参数是一个*字符串*，代表了某个属性的名字。
+第一个参数可以是任何对象；第二个参数是一个*字符串*，代表了某个属性的名字。
 
 你也可以使用 `try`　语句来检查某个对象是不是有你需要的属性:
 
-    try:
-        x = p.x
-    except AttributeError:
-        x = 0
+```python
+try:
+    x = p.x
+except AttributeError:
+    x = 0
+```
 
 这个方法可以让你更容易编写出可以适应多种数据结构的函数。你可以在[polymorphism]节查看更多内容。
 
@@ -355,13 +349,11 @@ copy）**，因为它仅复制了对象以及其包含的引用， 但未复制�
 
 浅复制（shallow copy）:
 
-> 在复制对象内容的时候，只包含嵌套对象的引用，通过 `copy` 模块的 `copy`
-> 函数实现。
+> 在复制对象内容的时候，只包含嵌套对象的引用，通过 `copy` 模块的 `copy` 函数实现。
 
 深复制（deep copy）:
 
-> 在复制对象内容的时候，既复制对象属性，也复制所有嵌套对象及其中的所有嵌套对象，由
-> `copy` 模块的 `deepcopy` 函数实现。
+> 在复制对象内容的时候，既复制对象属性，也复制所有嵌套对象及其中的所有嵌套对象，由 `copy` 模块的 `deepcopy` 函数实现。
 
 对象图（object diagram）:
 
@@ -372,50 +364,31 @@ copy）**，因为它仅复制了对象以及其包含的引用， 但未复制�
 
 ### 习题 15-1
 
-定义一个叫做 `Circle`　的类，类的属性是圆心(`center`)
-和半径(`radius`),其中，圆心(`center`) 是一个　`Point`
-类，而半径(`radius`)是一个数字。
+定义一个叫做 `Circle`　的类，类的属性是圆心(`center`) 和半径(`radius`),其中，圆心(`center`) 是一个　`Point` 类，而半径(`radius`)是一个数字。
 
-实例化一个圆心(center)为$(150, 100)$，半径(radius)为 75 的 `Circle`
-对象。
+实例化一个圆心(center)为$(150, 100)$，半径(radius)为 75 的 `Circle` 对象。
 
 ### 习题 15-2
 
-编写一个名称为 `point_in_circle`
-的函数，该函数可以接受一个圆类(`Circle`)对象和点类
-(`Point`)对象，然后判断该点是否在圆内。在圆内则返回 `True` 。
+编写一个名称为 `point_in_circle` 的函数，该函数可以接受一个圆类(`Circle`)对象和点类 (`Point`)对象，然后判断该点是否在圆内。在圆内则返回 `True` 。
 
 ### 习题 15-3
 
-编写一个名称为 `rect_in_circle`
-的函数，该函数接受一个圆类(`Circle`)对象和矩形(`Rectangle`)对象，如果该矩形是否完全在圆内或者在圆上则返回
-`True` 。
+编写一个名称为 `rect_in_circle` 的函数，该函数接受一个圆类(`Circle`)对象和矩形(`Rectangle`)对象，如果该矩形是否完全在圆内或者在圆上则返回 `True` 。
 
 ### 习题 15-4
 
-编写一个名为 `rect_circle_overlap`
-函数，该函数接受一个圆类对象和一个矩形类对象，如果矩形有任意一个角落在圆内则返回
-`True` 。或者写一个更具有挑战性的版本，如果该矩形有任何部分落在圆内返回
-`True` 。
+编写一个名为 `rect_circle_overlap` 函数，该函数接受一个圆类对象和一个矩形类对象，如果矩形有任意一个角落在圆内则返回 `True` 。或者写一个更具有挑战性的版本，如果该矩形有任何部分落在圆内返回 `True` 。
 
 答案:<http://thinkpython2.com/code/Circle.py>.
 
 ### 习题 15-5
 
-编写一个名为 `draw_rect` 的函数，该函数接受一个 `Turtle` 对象和一个
-`Rectangle` 对象，使用 `Turtle` 画出该矩形。参考[turtlechap]章中使用
-`Turtle` 的示例。
+编写一个名为 `draw_rect` 的函数，该函数接受一个 `Turtle` 对象和一个 `Rectangle` 对象，使用 `Turtle` 画出该矩形。参考[turtlechap]章中使用 `Turtle` 的示例。
 
 ### 习题 15-6
 
-编写一个名为　`draw_circle` 的函数，该函数接受一个　`Turtle` 对象和
-`Circle` 对象，并画出该圆。
+编写一个名为　`draw_circle` 的函数，该函数接受一个　`Turtle` 对象和 `Circle` 对象，并画出该圆。
 
 答案:<http://thinkpython2.com/code/draw.py>.
-
-### **贡献者**
-
-1.  翻译：[@iphyer](https://github.com/iphyer)
-2.  校对：[@bingjin](https://github.com/bingjin)
-3.  参考：[@carfly](https://github.com/carfly)
 

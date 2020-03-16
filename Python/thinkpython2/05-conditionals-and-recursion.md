@@ -466,10 +466,7 @@ ValueError: math domain error
 
 ### 习题 5-1
 
-`time`
-模块提供了一个可以返回当前格林威治标准时间的函数，名字也是time。这里的格林威治标准时间用纪元(the
-epoch)以来的秒数表示， 纪元是一个任意的参考点。在 Unix
-系统中，纪元是1970年1月1号。
+`time` 模块提供了一个可以返回当前格林威治标准时间的函数，名字也是time。这里的格林威治标准时间用纪元(the epoch)以来的秒数表示， 纪元是一个任意的参考点。在 Unix 系统中，纪元是1970年1月1号。
 
 ```python
 >>> import time
@@ -481,11 +478,7 @@ epoch)以来的秒数表示， 纪元是一个任意的参考点。在 Unix
 
 ### 习题 5-2
 
-费马大定理（Fermat’s Last Theorem ）称，没有任何整型数$a$、$b$和$c$能够使
-
-$$a^n + b^n = c^n$$
-
-对于任何大于2的$n$成立。
+费马大定理（Fermat’s Last Theorem ）称，没有任何整型数$a$、$b$和$c$能够使 $a^n + b^n = c^n$ 对于任何大于2的$n$成立。
 
 1.  写一个名为`check_fermat`的函数，接受四个形参——a，b，c以及n——检查费马大定理是否成立。 如果$n$大于2且等式$$a^n + b^n = c^n$$ 成立，程序应输出“`Holy smokes, Fermat was wrong!`”。 否则程序应输出“`No, that doesn’t work.`”。
 

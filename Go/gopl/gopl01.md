@@ -41,7 +41,7 @@ $ go build helloworld.go
 
 这个命令生成一个名为`helloworld`的可执行的二进制文件（译注：Windows系统下生成的可执行文件是`helloworld.exe`，增加了`.exe`后缀名），之后你可以随时运行它（译注：在Windows系统下在命令行直接输入`helloworld.exe`命令运行），不需任何处理（译注：因为静态编译，所以不用担心在系统库更新的时候冲突，幸福感满满）。
 
-```go
+```bash
 $ ./helloworld
 Hello, 世界
 ```

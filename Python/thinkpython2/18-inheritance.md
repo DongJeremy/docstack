@@ -1,51 +1,39 @@
 第十八章：继承
 ==============
 
-最常与面向对象编程联系在一起的语言特性就是 **继承**
-。继承指的是在现有类的基础下进行修改，从而定义新类的能力。在本章中，我会用表示卡牌（playing
-cards）、一副牌（deck of hands）和牌型（poker
-hands）的类，来展示继承这一特性。
+最常与面向对象编程联系在一起的语言特性就是 **继承**。继承指的是在现有类的基础下进行修改，从而定义新类的能力。在本章中，我会用表示卡牌（playing cards）、一副牌（deck of hands）和牌型（poker hands）的类，来展示继承这一特性。
 
-如果你不玩扑克牌，你可以阅读 <http://en.wikipedia.org/wiki/Poker>
-了解一下，但这不是必须的；我会告诉你完成练习所需要了解的知识点。
+如果你不玩扑克牌，你可以阅读 <http://en.wikipedia.org/wiki/Poker> 了解一下，但这不是必须的；我会告诉你完成练习所需要了解的知识点。
 
 本章的代码示例可以从 <http://thinkpython2.com/code/Card.py> 下载。
 
 卡牌对象
 --------
 
-一副牌有52张牌，每一张属于4种花色的一个和13个等级的一个。
-4种花色是黑桃（Spades），红心（Hearts），方块（Diamonds），梅花（Clubs），
-以桥牌中的逆序排列。13个等级是A、2、3、4、5、6、7、8、9、10、J、Q、K。
-根据你玩的游戏的不同，A 可能比 K 大或者比 2 小。
+一副牌有52张牌，每一张属于4种花色的一个和13个等级的一个。4种花色是黑桃（Spades），红心（Hearts），方块（Diamonds），梅花（Clubs），以桥牌中的逆序排列。13个等级是A、2、3、4、5、6、7、8、9、10、J、Q、K。根据你玩的游戏的不同，A 可能比 K 大或者比 2 小。
 
-如果我们定义一个新的对象来表示卡牌，明显它应该有`rank`（等级）
-和`suit`（花色）
-两个属性。但两个属性的类型不太明显。一个可能是使用字符串类型，
-如`'Spade'`表示花色，`'Queen'`表示等级。这种实现的一个问题是，不是那么容易比较牌的大小，看哪张牌的等级或花色更高。
+如果我们定义一个新的对象来表示卡牌，明显它应该有`rank`（等级）和`suit`（花色）两个属性。但两个属性的类型不太明显。一个可能是使用字符串类型，如`'Spade'`表示花色，`'Queen'`表示等级。这种实现的一个问题是，不是那么容易比较牌的大小，看哪张牌的等级或花色更高。
 
-另外一种方法，是使用一个整型来 **编码** 等级和花色。
-在这里，“编码”表示我们要定义一个数字到花色或数字到等级的映射。
-但是这里的编码并不是为了保密（那就成了“加密”）。
+另外一种方法，是使用一个整型来 **编码** 等级和花色。在这里，“编码”表示我们要定义一个数字到花色或数字到等级的映射。但是这里的编码并不是为了保密（那就成了“加密”）。
 
 例如，下面的表格列出了花色和对应的整数码：
 
-  ------------- -------------------- ------
+------------- -------------------- ------
   Spades        :math:\\mapsto       3
   Hearts        :math:\\mapsto       2
   Diamonds      $\mapsto$            1
   Clubs         $\mapsto$            0
-  ------------- -------------------- ------
+------------- -------------------- ------
 
 整数码使得很容易比较牌的大小；因为更高的花色对应更高的数字，我们可以通过比较数字，来判断花色的的大小。
 
 等级的映射类型选择就显而易见；每个数字等级对应相应的整数，然后对于J，K，Q：
 
-  ---------- -------------------- -------
+---------- -------------------- -------
   Jack       $\mapsto$            11
   Queen      $\mapsto$            12
   King       $\mapsto$            13
-  ---------- -------------------- -------
+---------- -------------------- -------
 
 这里，我使用$\mapsto$符号来清楚的表示，这些不是 Python
 程序的一部分。它们属于程序设计的一部分，但是不会出现在代码中。
@@ -54,7 +42,7 @@ hands）的类，来展示继承这一特性。
 
     class Card:
         """代表一张标准的卡牌"""
-
+    
         def __init__(self, suit=0, rank=2):
             self.suit = suit
             self.rank = rank
@@ -72,11 +60,11 @@ hands）的类，来展示继承这一特性。
 一种直接的方法是使用字符串列表。我们把这些列表赋值到**类属性**：
 
     # 在Card类内部:
-
+    
         suit_names = ['Clubs', 'Diamonds', 'Hearts', 'Spades']
         rank_names = [None, 'Ace', '2', '3', '4', '5', '6', '7', 
                   '8', '9', '10', 'Jack', 'Queen', 'King']
-
+    
         def __str__(self):
             return '%s of %s' % (Card.rank_names[self.rank],
                                  Card.suit_names[self.suit])
@@ -135,19 +123,19 @@ fig.card1是 `Card` 类对象和一个 `Card` 实例的图示。`Card`
 定好了这个规则后，我们可以编写`__lt__`了：
 
     # 在Card类内部:
-
+    
         def __lt__(self, other):
             # 判断花色
             if self.suit < other.suit: return True
             if self.suit > other.suit: return False
-
+    
             # 花色相同...判断等级
             return self.rank < other.rank
 
 你可以使用元组比较来使得代码更加简洁：
 
     # 在Card类内部:
-
+    
         def __lt__(self, other):
             t1 = self.suit, self.rank
             t2 = other.suit, other.rank
@@ -167,7 +155,7 @@ fig.card1是 `Card` 类对象和一个 `Card` 实例的图示。`Card`
 属性，然后生成了由52张牌组成一副标准卡牌。
 
     class Deck:
-
+    
         def __init__(self):
             self.cards = []
             for suit in range(4):
@@ -186,7 +174,7 @@ fig.card1是 `Card` 类对象和一个 `Card` 实例的图示。`Card`
 下面是为 `Deck` 定义的 `__str__` 方法：
 
     # Deck类的内部
-
+    
         def __str__(self):
             res = []
             for card in self.cards:
@@ -220,7 +208,7 @@ fig.card1是 `Card` 类对象和一个 `Card` 实例的图示。`Card`
 `pop` 方法提供了一个便捷的实现：
 
     # Deck类的内部
-
+    
         def pop_card(self):
             return self.cards.pop()
 
@@ -232,7 +220,7 @@ bottom of the deck.
 我们可以使用列表的 `append` 方法，添加一张卡牌：
 
     # Deck类的内部
-
+    
         def add_card(self, card):
             self.cards.append(card)
 
@@ -247,7 +235,7 @@ bottom of the deck.
 写一个叫 `shuffle` 的方法。
 
     # Deck类的内部
-
+    
         def shuffle(self):
             random.shuffle(self.cards)
 
@@ -283,7 +271,7 @@ bottom of the deck.
 类继承来的同名方法。
 
     # Hand 类的内部
-
+    
         def __init__(self, label=''):
             self.cards = []
             self.label = label
@@ -309,7 +297,7 @@ bottom of the deck.
 很自然地，下一步就是把这些代码封装进一个叫`move_cards`的方法：
 
     # Deck类的内部
-
+    
         def move_cards(self, hand, num):
             for i in range(num):
                 hand.add_card(self.pop_card())
@@ -390,7 +378,7 @@ markov一节中介绍的马尔科夫分析就是一个很好的例子。如果�
 下面是一个示例：
 
     class Markov:
-
+    
         def __init__(self):
             self.suffix_map = {}
             self.prefix = ()    
@@ -401,13 +389,13 @@ markov一节中介绍的马尔科夫分析就是一个很好的例子。如果�
         if len(self.prefix) < order:
             self.prefix += (word,)
             return
-
+    
         try:
             self.suffix_map[self.prefix].append(word)
         except KeyError:
             # if there is no entry for this prefix, make one
             self.suffix_map[self.prefix] = [word]
-
+    
         self.prefix = shift(self.prefix, word)        
 
 像这样改变一个程序 —— 改变设计而保持功能不变 ——
@@ -531,7 +519,7 @@ HAS-A 关系：
 
     class PingPongParent:
         pass
-
+    
     class Ping(PingPongParent):
         def __init__(self, pong):
             self.pong = pong
@@ -543,10 +531,10 @@ HAS-A 关系：
                 self.pings = []
             else:
                 self.pings = pings
-
+    
         def add_ping(self, ping):
             self.pings.append(ping)
-
+    
     pong = Pong()
     ping = Ping(pong)
     pong.add_ping(ping)

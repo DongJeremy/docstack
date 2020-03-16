@@ -29,7 +29,7 @@
 'b'
 ```
 
-所以b是 `'banana'` 的第0个字母(“zero-eth”)，a是第一个字母(“one-eth”)，n是第二个字 母(“two-eth”)。
+所以b是 `'banana'` 的第0个字母(“`zero-eth`”)，a是第一个字母(“`one-eth`”)，n是第二个字 母(“`two-eth`”)。
 
 你可以使用一个包含变量名和运算符的表达式作为索引：
 
@@ -472,9 +472,7 @@ True
 
 ### 习题8-1
 
-点击如下链接，阅读字符串方法的文档
-<http://docs.python.org/3/library/stdtypes.html#string-methods>
-。为了确保你理解他们是怎么工作的，可以尝试使用其中的一些方法。`strip` 和 `replace` 尤其有用。
+点击如下链接，阅读字符串方法的文档 <http://docs.python.org/3/library/stdtypes.html#string-methods>。为了确保你理解他们是怎么工作的，可以尝试使用其中的一些方法。`strip` 和 `replace` 尤其有用。
 
 文档中使用了可能会引起困惑的句法。例如， 在 `find(sub[， start[， end]])` 中，方括号意味着这是可选参数。所以，`sub` 是必填参数，但是 `start` 是可选的，而且如果你提供了 `start` ，也不一定必须提供 `end` 。
 
@@ -543,8 +541,10 @@ def any_lowercase5(s):
 
 你可能想用内置函数 `ord` ，它可以将字符转化成数值代码，还有 `chr` ，它可以将数值代码转 化成字符. 字母表的字母以字母表顺序编码，例如：
 
-    >>> ord('c') - ord('a')
-    2
+```python
+>>> ord('c') - ord('a')
+2
+```
 
 因为 `'c'`是字母表中的第二个字母。但是请注意：大写字母的数值代码是不同的。
 
