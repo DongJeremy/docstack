@@ -124,7 +124,7 @@ abstract class AbstractAccess {
 }
 ```
 
-**private abstract** 被禁止了是有意义的，因为你不可能在 **AbstractAccess** 的任何子类中合法地定义它。
+**private abstract** 被禁止了是有意义的，因为你不可能在 **`AbstractAccess`** 的任何子类中合法地定义它。
 
 上一章的 **Instrument** 类可以很轻易地转换为一个抽象类。只需要部分方法是 **abstract** 即可。将一个类指明为 **abstract** 并不强制类中的所有方法必须都是抽象方法。如下图所示：
 
@@ -141,13 +141,10 @@ import polymorphism.music.Note;
 
 abstract class Instrument {
     private int i; // Storage allocated for each
-    
     public abstract void play(Note n);
-    
     public String what() {
         return "Instrument";
     }
-    
     public abstract void adjust();
 }
 
@@ -156,12 +153,10 @@ class Wind extends Instrument {
     public void play(Note n) {
         System.out.println("Wind.play() " + n);
     }
-    
     @Override
     public String what() {
         return "Wind";
     }
-    
     @Override
     public void adjust() {
         System.out.println("Adjusting Wind");
@@ -252,16 +247,13 @@ public class Music4 {
         tuneAll(orchestra);
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 Wind.play() MIDDLE_C
 Percussion.play() MIDDLE_C
 Stringed.play() MIDDLE_C
 Brass.play() MIDDLE_C
 Woodwind.play() MIDDLE_C
+*/
 ```
 
 除了 **Instrument**，基本没区别。
@@ -290,7 +282,7 @@ public interface PureInterface {
 
 一个接口表示：所有实现了该接口的类看起来都像这样。因此，任何使用某特定接口的代码都知道可以调用该接口的哪些方法，而且仅需知道这些。所以，接口被用来建立类之间的协议。（一些面向对象编程语言中，使用 protocol 关键字完成相同的功能。）
 
-Java 8 中接口稍微有些变化，因为 Java 8 允许接口包含默认方法和静态方法——基于某些重要原因，看到后面你会理解。接口的基本概念仍然没变，介于类型之上、实现之下。接口与抽象类最明显的区别可能就是使用上的惯用方式。接口的典型使用是代表一个类的类型或一个形容词，如 `Runnable` 或 `Serializable`，而抽象类通常是类层次结构的一部分或一件事物的类型，如 `String` 或 `ActionHero`。
+Java 8 中接口稍微有些变化，因为 Java 8 允许接口包含**默认方法**和**静态方法**——基于某些重要原因，看到后面你会理解。接口的基本概念仍然没变，介于类型之上、实现之下。接口与抽象类最明显的区别可能就是使用上的惯用方式。接口的典型使用是代表一个类的类型或一个形容词，如 `Runnable` 或 `Serializable`，而抽象类通常是类层次结构的一部分或一件事物的类型，如 `String` 或 `ActionHero`。
 
 使用关键字 **interface** 而不是 **class** 来创建接口。和类一样，需要在关键字 **interface** 前加上 **public** 关键字（但只是在接口名与文件名相同的情况下），否则接口只有包访问权限，只能在接口相同的包下才能使用它。
 
@@ -340,24 +332,19 @@ public class AnImplementation implements AnInterface {
     public void firstMethod() {
         System.out.println("firstMethod");
     }
-    
     public void secondMethod() {
         System.out.println("secondMethod");
     }
-    
     public static void main(String[] args) {
         AnInterface i = new AnImplementation();
         i.firstMethod();
         i.secondMethod();
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 firstMethod
 secondMethod
+*/
 ```
 
 如果我们在 **`AnInterface`** 中增加一个新方法 `newMethod()`，而在 **`AnImplementation`** 中没有实现它，编译器就会报错：
@@ -392,12 +379,10 @@ public class Implementation2 implements InterfaceWithDefault {
     public void firstMethod() {
         System.out.println("firstMethod");
     }
-    
     @Override
     public void secondMethod() {
         System.out.println("secondMethod")
     }
-    
     public static void main(String[] args) {
         InterfaceWithDefault i = new Implementation2();
         i.firstMethod();
@@ -405,14 +390,11 @@ public class Implementation2 implements InterfaceWithDefault {
         i.newMethod();
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 firstMethod
 secondMethod
 newMethod
+*/
 ```
 
 尽管 **Implementation2** 中未定义 `newMethod()`，但是可以使用 `newMethod()` 了。 
@@ -436,13 +418,11 @@ interface One {
         System.out.println("first");
     }
 }
-
 interface Two {
     default void second() {
         System.out.println("second");
     }
 }
-
 interface Three {
     default void third() {
         System.out.println("third");
@@ -459,14 +439,11 @@ public class MultipleInheritance {
         mi.third();
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 first
 second
 third
+*/
 ```
 
 现在我们做些在 Java 8 之前不可能完成的事：结合多个源的实现。只要基类方法中的方法名和参数列表不同，就能工作得很好，否则会得到编译器错误：
@@ -480,13 +457,11 @@ interface Bob1 {
         System.out.println("Bob1::bob");
     }
 }
-
 interface Bob2 {
     default void bob() {
         System.out.println("Bob2::bob");
     }
 }
-
 // class Bob implements Bob1, Bob2 {}
 /* Produces:
 error: class Bob inherits unrelated defaults
@@ -495,13 +470,11 @@ class Bob implements Bob1, Bob2 {}
 ^
 1 error
 */
-
 interface Sam1 {
     default void sam() {
         System.out.println("Sam1::sam");
     }
 }
-
 interface Sam2 {
     default void sam(int i) {
         System.out.println(i * 2);
@@ -516,13 +489,11 @@ interface Max1 {
         System.out.println("Max1::max");
     }
 }
-
 interface Max2 {
     default int max() {
         return 47;
     }
 }
-
 // class Max implements Max1, Max2 {}
 /* Produces:
 error: types Max2 and Max1 are imcompatible;
@@ -544,13 +515,11 @@ interface Jim1 {
         System.out.println("Jim1::jim");
     }
 }
-
 interface Jim2 {
     default void jim() {
         System.out.println("Jim2::jim");
     }
 }
-
 public class Jim implements Jim1, Jim2 {
     @Override
     public void jim() {
@@ -561,12 +530,9 @@ public class Jim implements Jim1, Jim2 {
         new Jim().jim();
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 Jim2::jim
+*/
 ```
 
 当然，你可以重定义 `jim()` 方法，但是也能像上例中那样使用 **super** 关键字选择基类实现中的一种。
@@ -588,7 +554,6 @@ public interface Operations {
             op.execute();
         }
     }
-    
     static void show(String msg) {
         System.out.println(msg);
     }
@@ -608,35 +573,29 @@ class Bing implements Operations {
         Operations.show("Bing");
     }
 }
-
 class Crack implements Operations {
     @Override
     public void execute() {
         Operations.show("Crack");
     }
 }
-
 class Twist implements Operations {
     @Override
     public void execute() {
         Operations.show("Twist");
     }
 }
-
 public class Machine {
     public static void main(String[] args) {
         Operations.runOps(
         	new Bing(), new Crack(), new Twist());
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 Bing
 Crack
 Twist
+*/
 ```
 
 这里展示了创建 **Operations** 的不同方式：一个外部类(Bing)，一个匿名类，一个方法引用和 lambda 表达式——毫无疑问用在这里是最好的解决方法。
@@ -733,23 +692,18 @@ public class Music5 {
         tuneAll(orchestra);
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 Wind.play() MIDDLE_C
 Percussion.play() MIDDLE_C
 Stringed.play() MIDDLE_C
 Brass.play() MIDDLE_C
 Woodwind.play() MIDDLE_C
+*/
 ```
 
 这个版本的例子的另一个变化是：`what()` 被修改为 `toString()` 方法，因为 `toString()` 实现的正是 `what()` 方法要实现的逻辑。因为 `toString()` 是根基类 **Object** 的方法，所以它不需要出现在接口中。
 
 注意到，无论是将其向上转型为称作 **Instrument** 的普通类，或称作 **Instrument** 的抽象类，还是叫作 **Instrument** 的接口，其行为都是相同的。事实上，从 `tune()` 方法上看不出来 **Instrument** 到底是一个普通类、抽象类，还是一个接口。
-
-<!-- Abstract Classes vs. Interfaces -->
 
 ## 10.3 抽象类和接口
 
@@ -767,13 +721,11 @@ Woodwind.play() MIDDLE_C
 
 有一条实际经验：尽可能地抽象。因此，更倾向使用接口而不是抽象类。只有当必要时才使用抽象类。除非必须使用，否则不要用接口和抽象类。大多数时候，普通类已经做得很好，如果不行的话，再移动到接口或抽象类中。
 
-<!-- Complete Decoupling -->
-
 ## 10.4 完全解耦
 
 当方法操纵的是一个类而非接口时，它就只能作用于那个类或其子类。如果想把方法应用于那个继承层级结构之外的类，就会触霉头。接口在很大程度上放宽了这个限制，因而使用接口可以编写复用性更好的代码。
 
-例如有一个类 **Process** 有两个方法 `name()` 和 `process()`。`process()` 方法接受输入，修改并输出。把这个类作为基类用来创建各种不同类型的 **Processor**。下例中，**Processor** 的各个子类修改 String 对象（注意，返回类型可能是协变类型而非参数类型）：
+例如有一个类 **Process** 有两个方法 `name()` 和 `process()`。`process()` 方法接受输入，修改并输出。把这个类作为基类用来创建各种不同类型的 **Processor**。下例中，**Processor** 的各个子类修改 `String` 对象（注意，返回类型可能是协变类型而非参数类型）：
 
 ```java
 // interfaces/Applicator.java
@@ -825,17 +777,14 @@ public class Applicator {
         apply(new Splitter(), s);
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 Using Processor Upcase
 WE ARE SUCH STUFF AS DREAMS ARE MADE ON
 Using Processor Downcase
 we are such stuff as dreams are made on
 Using Processor Splitter
 [We, are, such, stuff, as, dreams, are, made, on]
+*/
 ```
 
 **Applicator** 的 `apply()` 方法可以接受任何类型的 **Processor**，并将其应用到一个 **Object** 对象上输出结果。像本例中这样，创建一个能根据传入的参数类型从而具备不同行为的方法称为*策略*设计模式。方法包含算法中不变的部分，策略包含变化的部分。策略就是传入的对象，它包含要执行的代码。在这里，**Processor** 对象是策略，`main()` 方法展示了三种不同的应用于 **String s** 上的策略。
@@ -865,7 +814,6 @@ public class Filter {
     public String name() {
         return getClass().getSimpleName();
     }
-    
     public Waveform process(Waveform input) {
         return input;
     }
@@ -876,7 +824,6 @@ package interfaces.filters;
 
 public class LowPass extends Filter {
     double cutoff;
-    
     public LowPass(double cutoff) {
         this.cutoff = cutoff;
     }
@@ -989,17 +936,14 @@ class Splitter implements StringProcessor {
         return Arrays.toString(((String) input).split(" "));
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 Using Processor Upcase
 IF SHE WEIGHS THE SAME AS A DUCK, SHE'S MADE OF WOOD
 Using Processor Downcase
 if she weighs the same as a duck, she's made of wood
 Using Processor Splitter
 [If, she, weighs, the, same, as, a, duck,, she's, made, of, wood]
+*/
 ```
 
 >[1] 该声明不是必要的，即使移除它，编译器也不会报错。但是注意这里的协变返回类型从 Object 变成了 String。
@@ -1042,26 +986,21 @@ public class FilterProcessor {
         Applicator.apply(new FilterAdapter(new BandPass(3.0, 4.0)), w);
     }
 }
-```
-
-输出：
-
-```
+/* Output:
 Using Processor LowPass
 Waveform 0
 Using Processor HighPass
 Waveform 0
 Using Processor BandPass
 Waveform 0
+*/
 ```
 
-在这种使用适配器的方式中，**FilterAdapter** 的构造器接受已有的接口 **Filter**，继而产生需要的 **Processor** 接口的对象。你可能还注意到 **FilterAdapter** 中使用了委托。
+在这种使用适配器的方式中，**`FilterAdapter`** 的构造器接受已有的接口 **Filter**，继而产生需要的 **Processor** 接口的对象。你可能还注意到 **`FilterAdapter`** 中使用了委托。
 
 协变允许我们从 `process()` 方法中产生一个 **Waveform** 而非 **Object** 对象。
 
 将接口与实现解耦使得接口可以应用于多种不同的实现，因而代码更具可复用性。
-
-<!-- Combining Multiple Interfaces -->
 
 ## 10.5 多接口结合
 
@@ -1123,15 +1062,13 @@ public class Adventure {
 }
 ```
 
-类 **Hero** 结合了具体类 **ActionCharacter** 和接口 **CanFight**、**CanSwim** 和 **CanFly**。当通过这种方式结合具体类和接口时，需要将具体类放在前面，后面跟着接口（否则编译器会报错）。
+类 **Hero** 结合了具体类 **`ActionCharacter`** 和接口 **`CanFight`**、**`CanSwim`** 和 **`CanFly`**。当通过这种方式结合具体类和接口时，需要将具体类放在前面，后面跟着接口（否则编译器会报错）。
 
-接口 **CanFight** 和类 **ActionCharacter** 中的 `fight()` 方法签名相同，而在类 Hero 中也没有提供 `fight()` 的定义。可以扩展一个接口，但是得到的是另一个接口。当想创建一个对象时，所有的定义必须首先都存在。类 **Hero** 中没有显式地提供 `fight()` 的定义，是由于该方法在类 **ActionCharacter** 中已经定义过，这样才使得创建 **Hero** 对象成为可能。
+接口 **`CanFight`** 和类 **`ActionCharacter`** 中的 `fight()` 方法签名相同，而在类 Hero 中也没有提供 `fight()` 的定义。可以扩展一个接口，但是得到的是另一个接口。当想创建一个对象时，所有的定义必须首先都存在。类 **Hero** 中没有显式地提供 `fight()` 的定义，是由于该方法在类 **`ActionCharacter`** 中已经定义过，这样才使得创建 **Hero** 对象成为可能。
 
-在类 **Adventure** 中可以看到四个方法，它们把不同的接口和具体类作为参数。当创建一个 **Hero** 对象时，它可以被传入这些方法中的任意一个，意味着它可以依次向上转型为每个接口。Java 中这种接口的设计方式，使得程序员不需要付出特别的努力。
+在类 **`Adventure`** 中可以看到四个方法，它们把不同的接口和具体类作为参数。当创建一个 **Hero** 对象时，它可以被传入这些方法中的任意一个，意味着它可以依次向上转型为每个接口。Java 中这种接口的设计方式，使得程序员不需要付出特别的努力。
 
 记住，前面例子展示了使用接口的核心原因之一：为了能够向上转型为多个基类型（以及由此带来的灵活性）。然而，使用接口的第二个原因与使用抽象基类相同：防止客户端程序员创建这个类的对象，确保这仅仅只是一个接口。这带来了一个问题：应该使用接口还是抽象类呢？如果创建不带任何方法定义或成员变量的基类，就选择接口而不是抽象类。事实上，如果知道某事物是一个基类，可以考虑用接口实现它（这个主题在本章总结会再次讨论）。
-
-<!-- Extending an Interface with Inheritance -->
 
 ## 10.6 使用继承扩展接口
 
@@ -1204,13 +1141,13 @@ public class HorrorShow {
 }
 ```
 
-接口 **DangerousMonster** 是 **Monster** 简单扩展的一个新接口，类 **DragonZilla** 实现了这个接口。
+接口 **`DangerousMonster`** 是 **Monster** 简单扩展的一个新接口，类 **`DragonZilla`** 实现了这个接口。
 
 **Vampire** 中使用的语法仅适用于接口继承。通常来说，**extends** 只能用于单一类，但是在构建接口时可以引用多个基类接口。注意到，接口名之间用逗号分隔。
 
 ### 10.6.1 结合接口时的命名冲突
 
-当实现多个接口时可能会存在一个小陷阱。在前面的例子中，**CanFight** 和 **ActionCharacter** 具有完全相同的 `fight()` 方法。完全相同的方法没有问题，但是如果它们的签名或返回类型不同会怎么样呢？这里有一个例子：
+当实现多个接口时可能会存在一个小陷阱。在前面的例子中，**`CanFight`** 和 **`ActionCharacter`** 具有完全相同的 `fight()` 方法。完全相同的方法没有问题，但是如果它们的签名或返回类型不同会怎么样呢？这里有一个例子：
 
 ```java
 // interfaces/InterfaceCollision.java
@@ -1435,9 +1372,9 @@ public interface Months {
 }
 ```
 
-注意 Java 中使用大写字母的风格定义具有初始化值的 **static** **final** 变量。接口中的字段自动是 **public** 的，所以没有显式指明这点。
+注意 Java 中使用大写字母的风格定义具有初始化值的 **`static final`** 变量。接口中的字段自动是 **`public`** 的，所以没有显式指明这点。
 
-自 Java 5 开始，我们有了更加强大和灵活的关键字 **enum**，那么在接口中定义常量组就显得没什么意义了。然而当你阅读遗留的代码时，在很多场合你还会碰到这种旧的习惯用法。在“枚举”一章中你会学习到更多关于枚举的内容。
+自 Java 5 开始，我们有了更加强大和灵活的关键字 **`enum`**，那么在接口中定义常量组就显得没什么意义了。然而当你阅读遗留的代码时，在很多场合你还会碰到这种旧的习惯用法。在“枚举”一章中你会学习到更多关于枚举的内容。
 
 ### 初始化接口中的字段
 
@@ -1458,7 +1395,7 @@ public interface RandVals {
 }
 ```
 
-因为字段是 **static** 的，所以它们在类第一次被加载时初始化，这发生在任何字段首次被访问时。下面是个简单的测试：
+因为字段是 **`static`** 的，所以它们在类第一次被加载时初始化，这发生在任何字段首次被访问时。下面是个简单的测试：
 
 ```java
 // interfaces/TestRandVals.java
@@ -1613,7 +1550,7 @@ public class NestingInterfaces {
 
 在类中嵌套接口的语法是相当显而易见的。就像非嵌套接口一样，它们具有 **public** 或包访问权限的可见性。
 
-作为一种新添加的方式，接口也可以是 **private** 的，例如 **A.D**（同样的语法同时适用于嵌套接口和嵌套类）。那么 **private** 嵌套接口有什么好处呢？你可能猜测它只是被用来实现一个 **private** 内部类，就像 **DImp**。然而 **A.DImp2** 展示了它可以被实现为 **public** 类，但是 **A.DImp2** 只能被自己使用，你无法说它实现了 **private** 接口 **D**，所以实现 **private** 接口是一种可以强制该接口中的方法定义不会添加任何类型信息（即不可以向上转型）的方式。
+作为一种新添加的方式，接口也可以是 **private** 的，例如 **A.D**（同样的语法同时适用于嵌套接口和嵌套类）。那么 **private** 嵌套接口有什么好处呢？你可能猜测它只是被用来实现一个 **private** 内部类，就像 **`DImp`**。然而 **A.DImp2** 展示了它可以被实现为 **public** 类，但是 **A.DImp2** 只能被自己使用，你无法说它实现了 **private** 接口 **D**，所以实现 **private** 接口是一种可以强制该接口中的方法定义不会添加任何类型信息（即不可以向上转型）的方式。
 
 `getD()` 方法产生了一个与 **private** 接口有关的窘境。它是一个 **public** 方法却返回了对 **private** 接口的引用。能对这个返回值做些什么呢？`main()` 方法里进行了一些使用返回值的尝试但都失败了。返回值必须交给有权使用它的对象，本例中另一个 **A** 通过 `receiveD()` 方法接受了它。
 
@@ -1795,7 +1732,3 @@ Chess move 3
 任何抽象性都应该是由真正的需求驱动的。当有必要时才应该使用接口进行重构，而不是到处添加额外的间接层，从而带来额外的复杂性。这种复杂性非常显著，如果你让某人去处理这种复杂性，只是因为你意识到“以防万一”而添加新接口，而没有其他具有说服力的原因——好吧，如果我碰上了这种设计，就会质疑此人所作的所有其他设计了。
 
 恰当的原则是优先使用类而不是接口。从类开始，如果使用接口的必要性变得很明确，那么就重构。接口是一个伟大的工具，但它们容易被滥用。
-
-<!-- 分页 -->
-
-<div style="page-break-after: always;"></div>
